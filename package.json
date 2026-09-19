@@ -18,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/YoungGloria/mystery-road-awe-2026_new/issues"
   },
-  "homepage": "https://github.com/YoungGloria/mystery-road-awe-2026_new#readme"
+  "homepage": "https://github.com/YoungGloria/mystery-road-awe-2026_new#readme",
+  "devDependencies": {
+    "vite": "^8.3.0"
+  }
 }
