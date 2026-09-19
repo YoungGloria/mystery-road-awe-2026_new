@@ -1,10 +1,7 @@
 import {
-  filteredEvidence,
   setFilteredEvidence,
   allEvidence,
   evidenceMentionsPerson,
-  loadEvidenceData,
-  applyStoredBookmarkFlags,
   bookmarks,
   saveBookmarksToStorage,
   findEvidenceById,
@@ -12,7 +9,7 @@ import {
   removeBookmark,
 } from '../states/evidenceState.js';
 import { findPersonById, allPeople } from '../states/peopleState.js';
-import { findLocationById, allLocations } from '../states/locationState.js';
+import { allLocations } from '../states/locationState.js';
 import {
   formatDate,
   getStatusBadgeClass,
@@ -20,6 +17,7 @@ import {
 } from '../helpers.js';
 import { currentPage } from '../states/appState.js';
 import { openEvidenceDetail } from './evidenceDetails.js';
+import { navigateTo } from '../navigation.js';
 
 // DEMO 5: is never set to false in orignial code
 let evidenceViewLoading = true;

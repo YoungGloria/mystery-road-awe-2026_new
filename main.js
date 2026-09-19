@@ -1,40 +1,26 @@
 import {
-  loadEvidenceData,
-  findEvidenceById,
   loadNoteAsync,
   setFilteredEvidence,
   applyStoredBookmarkFlags,
+  loadEvidenceData,
+  allEvidence,
+  loadBookmarksFromStorage,
+  loadNotesFromStorage,
 } from './modules/states/evidenceState.js';
-import {
-  loadLocations,
-  findLocationById,
-} from './modules/states/locationState.js';
-import { loadPeople, findPersonById } from './modules/states/peopleState.js';
+import { loadLocations } from './modules/states/locationState.js';
+import { loadPeople } from './modules/states/peopleState.js';
 import { loadTimelineData } from './modules/states/timelineState.js';
 import { renderDashboard } from './modules/views/dashboard.js';
 import {
   renderEvidenceList,
-  populateEvidenceDropdowns,
   handleSearchInput,
   clearFilters,
   handleSortChange,
   removeEvidenceViewLoading,
 } from './modules/views/evidenceCatalogue.js';
-import {
-  renderPeople,
-  renderLocations,
-  switchPeopleTab,
-} from './modules/views/peopleLocations.js';
-import {
-  renderTimeline,
-  populateTimelineDropdowns,
-} from './modules/views/timeline.js';
-import {
-  renderWorkspace,
-  populateHypothesisDropdowns,
-  saveHypothesis,
-} from './modules/views/workspace.js';
-import { currentPage } from './modules/states/appState.js';
+import { switchPeopleTab } from './modules/views/peopleLocations.js';
+import { renderTimeline } from './modules/views/timeline.js';
+import { saveHypothesis } from './modules/views/workspace.js';
 import {
   navigateTo,
   showLoadingOverlay,
@@ -42,15 +28,7 @@ import {
   populateAllDropdowns,
   handleHashChange,
 } from './modules/navigation.js';
-import {
-  loadCaseData,
-  loadingStepsRemaining,
-} from './modules/states/appState.js';
-import {
-  allEvidence,
-  loadBookmarksFromStorage,
-  loadNotesFromStorage,
-} from './modules/states/evidenceState.js';
+import { loadCaseData } from './modules/states/appState.js';
 import {
   closeEvidenceDetail,
   saveCurrentNote,
@@ -86,10 +64,12 @@ function initApp() {
 
   // DEMO 3: loadNoteAsync returns a promise.
   // the resulting value is unwrapped  and passed to the then() callback as firstNote
-  loadAllData().then(function (firstNote) {
+  loadAllData().then(function (data) {
     handleHashChange();
-    var firstNote = loadNoteAsync('E01');
-    console.log('First note preview:', firstNote);
+
+    loadNoteAsync('E01').then(function (firstNote) {
+      console.log('First note preview:', firstNote);
+    });
   });
 }
 
@@ -112,8 +92,8 @@ function setupEventListeners() {
 
   // DEMO 4: let instead of var to ensure correct scoping (block!) in the event listener
   // note that navigation was not affected functionally, as it is handled by onclick="navigateTo(...)" in index.html, but this resolves the consol error
-  var navButtons = document.querySelectorAll('.nav-btn');
-  for (let i = 0; i < navButtons.length; i++) {
+  let navButtons = document.querySelectorAll('.nav-btn');
+  for (var i = 0; i < navButtons.length; i++) {
     // use let to ensure correct scoping in the event listener
     navButtons[i].addEventListener('click', function () {
       var targetView = navButtons[i].getAttribute('data-view');

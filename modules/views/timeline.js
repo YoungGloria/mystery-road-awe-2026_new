@@ -1,9 +1,6 @@
 import { allPeople } from '../states/peopleState.js';
 import { allLocations, findLocationById } from '../states/locationState.js';
-import { allTimeline, loadTimelineData } from '../states/timelineState.js';
-import { findEvidenceById } from '../states/evidenceState.js';
-import { currentPage } from '../states/appState.js';
-import { renderDashboard } from './dashboard.js';
+import { allTimeline } from '../states/timelineState.js';
 import { openEvidenceModal } from './evidenceCatalogue.js';
 import { formatDate, certaintyBadgeClass } from '../helpers.js';
 

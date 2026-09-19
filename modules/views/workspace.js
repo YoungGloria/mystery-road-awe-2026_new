@@ -1,6 +1,5 @@
 import { allEvidence, notesStore } from '../states/evidenceState.js';
 import { allPeople } from '../states/peopleState.js';
-import { allLocations } from '../states/locationState.js';
 import { getSelectedOptions } from '../helpers.js';
 import { openEvidenceDetail } from './evidenceDetails.js';
 import { navigateTo } from '../navigation.js';

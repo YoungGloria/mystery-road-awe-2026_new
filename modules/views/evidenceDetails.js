@@ -1,7 +1,6 @@
 import {
   loadNoteForEvidence,
   saveNoteForEvidence,
-  evidenceMentionsPerson,
   findEvidenceById,
   setSelectedEvidence,
   clearSelectedEvidence,
