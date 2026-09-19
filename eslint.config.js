@@ -1,7 +1,11 @@
 import js from '@eslint/js';
 import eslintConfigPrettier from 'eslint-config-prettier';
+import globals from 'globals';
 
 export default [
+  {
+    ignores: ['node_modules/**', 'dist/**', 'build/**'],
+  },
   js.configs.recommended,
   eslintConfigPrettier,
   {
@@ -9,10 +13,7 @@ export default [
       ecmaVersion: 'latest',
       sourceType: 'module',
       globals: {
-        document: 'readonly',
-        window: 'readonly',
-        console: 'readonly',
-        setTimeout: 'readonly',
+        ...globals.browser,
       },
     },
     rules: {
