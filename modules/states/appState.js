@@ -1,5 +1,5 @@
-let currentPage = "dashboard";
-let loadingStepsRemaining = 2; 
+let currentPage = 'dashboard';
+let loadingStepsRemaining = 2;
 let caseData = {};
 
 // Track which views have been rendered to avoid unnecessary re-rendering - does not need setter as only fields are mutated, the object is not reassigned
@@ -8,7 +8,7 @@ var viewRendered = {
   evidence: false,
   people: false,
   timeline: false,
-  workspace: false
+  workspace: false,
 };
 
 function setCurrentPage(page) {
@@ -20,7 +20,7 @@ function decrementLoadingSteps() {
   return loadingStepsRemaining;
 }
 
-// DEMO 9: 
+// DEMO 9:
 // function loadCaseData() {
 //   return fetch("data/case.json")
 //     .then(function (caseRes) {
@@ -35,20 +35,28 @@ function decrementLoadingSteps() {
 //   });
 // }
 
-  async function loadCaseData() {
-    try {
-    const caseRes = await fetch("data/case.json");
+async function loadCaseData() {
+  try {
+    const caseRes = await fetch('data/case.json');
 
     if (!caseRes.ok) {
-      throw new Error("Error fetching case.json: " + caseRes.statusText);
+      throw new Error('Error fetching case.json: ' + caseRes.statusText);
     }
 
     caseData = await caseRes.json();
     return caseData;
   } catch (err) {
-    console.error("Failed to load case.json", err);
-    alert("Case data could not be loaded. Some views may be incomplete.");
+    console.error('Failed to load case.json', err);
+    alert('Case data could not be loaded. Some views may be incomplete.');
   }
 }
 
-export { currentPage, loadingStepsRemaining, caseData, viewRendered, decrementLoadingSteps, setCurrentPage, loadCaseData };
+export {
+  currentPage,
+  loadingStepsRemaining,
+  caseData,
+  viewRendered,
+  decrementLoadingSteps,
+  setCurrentPage,
+  loadCaseData,
+};

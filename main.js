@@ -1,18 +1,60 @@
-import { loadEvidenceData, findEvidenceById, loadNoteAsync, setFilteredEvidence, applyStoredBookmarkFlags } from './modules/states/evidenceState.js';
-import { loadLocations, findLocationById } from './modules/states/locationState.js';
+import {
+  loadEvidenceData,
+  findEvidenceById,
+  loadNoteAsync,
+  setFilteredEvidence,
+  applyStoredBookmarkFlags,
+} from './modules/states/evidenceState.js';
+import {
+  loadLocations,
+  findLocationById,
+} from './modules/states/locationState.js';
 import { loadPeople, findPersonById } from './modules/states/peopleState.js';
 import { loadTimelineData } from './modules/states/timelineState.js';
-import {renderDashboard} from './modules/views/dashboard.js';
-import { renderEvidenceList, populateEvidenceDropdowns, handleSearchInput, clearFilters, handleSortChange, removeEvidenceViewLoading } from './modules/views/evidenceCatalogue.js';
-import { renderPeople, renderLocations, switchPeopleTab } from './modules/views/peopleLocations.js';
-import { renderTimeline, populateTimelineDropdowns } from './modules/views/timeline.js';
-import { renderWorkspace, populateHypothesisDropdowns, saveHypothesis } from './modules/views/workspace.js';
+import { renderDashboard } from './modules/views/dashboard.js';
+import {
+  renderEvidenceList,
+  populateEvidenceDropdowns,
+  handleSearchInput,
+  clearFilters,
+  handleSortChange,
+  removeEvidenceViewLoading,
+} from './modules/views/evidenceCatalogue.js';
+import {
+  renderPeople,
+  renderLocations,
+  switchPeopleTab,
+} from './modules/views/peopleLocations.js';
+import {
+  renderTimeline,
+  populateTimelineDropdowns,
+} from './modules/views/timeline.js';
+import {
+  renderWorkspace,
+  populateHypothesisDropdowns,
+  saveHypothesis,
+} from './modules/views/workspace.js';
 import { currentPage } from './modules/states/appState.js';
-import { navigateTo, showLoadingOverlay, hideLoadingStep , populateAllDropdowns, handleHashChange} from './modules/navigation.js';
-import { loadCaseData, loadingStepsRemaining } from './modules/states/appState.js';
-import { allEvidence, loadBookmarksFromStorage, loadNotesFromStorage } from './modules/states/evidenceState.js';
-import {closeEvidenceDetail, saveCurrentNote} from './modules/views/evidenceDetails.js';
-
+import {
+  navigateTo,
+  showLoadingOverlay,
+  hideLoadingStep,
+  populateAllDropdowns,
+  handleHashChange,
+} from './modules/navigation.js';
+import {
+  loadCaseData,
+  loadingStepsRemaining,
+} from './modules/states/appState.js';
+import {
+  allEvidence,
+  loadBookmarksFromStorage,
+  loadNotesFromStorage,
+} from './modules/states/evidenceState.js';
+import {
+  closeEvidenceDetail,
+  saveCurrentNote,
+} from './modules/views/evidenceDetails.js';
 
 // loadTimelineData().then(function() {
 //   console.log("Timeline data loaded.");
@@ -36,24 +78,23 @@ import {closeEvidenceDetail, saveCurrentNote} from './modules/views/evidenceDeta
 //     renderDashboard();
 //   });
 
-
 // Init
 function initApp() {
   loadBookmarksFromStorage();
   loadNotesFromStorage();
   setupEventListeners();
 
-// DEMO 3: loadNoteAsync returns a promise. 
-// the resulting value is unwrapped  and passed to the then() callback as firstNote 
+  // DEMO 3: loadNoteAsync returns a promise.
+  // the resulting value is unwrapped  and passed to the then() callback as firstNote
   loadAllData().then(function (firstNote) {
     handleHashChange();
-    var firstNote = loadNoteAsync("E01");
-    console.log("First note preview:", firstNote);
+    var firstNote = loadNoteAsync('E01');
+    console.log('First note preview:', firstNote);
   });
 }
 
-window.addEventListener("DOMContentLoaded", initApp);
-window.addEventListener("hashchange", handleHashChange);
+window.addEventListener('DOMContentLoaded', initApp);
+window.addEventListener('hashchange', handleHashChange);
 
 // Manually attach to window because onclick="..." attributes in index.html
 // need global functions, which ES modules don't provide automatically.
@@ -64,59 +105,83 @@ window.saveHypothesis = saveHypothesis;
 window.closeEvidenceDetail = closeEvidenceDetail;
 window.saveCurrentNote = saveCurrentNote;
 
-// event listeners 
+// event listeners
 
 function setupEventListeners() {
-  window.addEventListener("hashchange", handleHashChange);
+  window.addEventListener('hashchange', handleHashChange);
 
   // DEMO 4: let instead of var to ensure correct scoping (block!) in the event listener
   // note that navigation was not affected functionally, as it is handled by onclick="navigateTo(...)" in index.html, but this resolves the consol error
-  var navButtons = document.querySelectorAll(".nav-btn");
-  for (let i = 0; i < navButtons.length; i++) { // use let to ensure correct scoping in the event listener
-    navButtons[i].addEventListener("click", function () {
-      var targetView = navButtons[i].getAttribute("data-view");
-      console.log("nav clicked:", targetView);
+  var navButtons = document.querySelectorAll('.nav-btn');
+  for (let i = 0; i < navButtons.length; i++) {
+    // use let to ensure correct scoping in the event listener
+    navButtons[i].addEventListener('click', function () {
+      var targetView = navButtons[i].getAttribute('data-view');
+      console.log('nav clicked:', targetView);
     });
   }
 
-  document.getElementById("evidenceSearch").addEventListener("input", handleSearchInput);
+  document
+    .getElementById('evidenceSearch')
+    .addEventListener('input', handleSearchInput);
 
-  document.getElementById("filterType").addEventListener("change", renderEvidenceList);
-  document.getElementById("filterPerson").addEventListener("change", renderEvidenceList);
-  document.getElementById("filterLocation").addEventListener("change", renderEvidenceList);
+  document
+    .getElementById('filterType')
+    .addEventListener('change', renderEvidenceList);
+  document
+    .getElementById('filterPerson')
+    .addEventListener('change', renderEvidenceList);
+  document
+    .getElementById('filterLocation')
+    .addEventListener('change', renderEvidenceList);
 
   // DEMO 1/DEMO 5: filterStatus is no longer handled by in-line-event handler, but by event listener
   // in-line event handlers are more prone to unexpected behavior such as accidental overwriting or double calls
-  document.getElementById("filterStatus").addEventListener("change", renderEvidenceList);
+  document
+    .getElementById('filterStatus')
+    .addEventListener('change', renderEvidenceList);
   //document.getElementById("filterStatus").setAttribute("onchange", "renderEvidenceList()");
 
-  document.getElementById("filterRelevance").addEventListener("change", renderEvidenceList);
+  document
+    .getElementById('filterRelevance')
+    .addEventListener('change', renderEvidenceList);
 
-  document.getElementById("clearFiltersBtn").addEventListener("click", clearFilters);
+  document
+    .getElementById('clearFiltersBtn')
+    .addEventListener('click', clearFilters);
 
-  document.getElementById("timelineOrder").addEventListener("change", renderTimeline);
-  document.getElementById("timelinePersonFilter").addEventListener("change", renderTimeline);
-  document.getElementById("timelineLocationFilter").addEventListener("change", renderTimeline);
-  document.getElementById("timelineTypeFilter").addEventListener("change", renderTimeline);
+  document
+    .getElementById('timelineOrder')
+    .addEventListener('change', renderTimeline);
+  document
+    .getElementById('timelinePersonFilter')
+    .addEventListener('change', renderTimeline);
+  document
+    .getElementById('timelineLocationFilter')
+    .addEventListener('change', renderTimeline);
+  document
+    .getElementById('timelineTypeFilter')
+    .addEventListener('change', renderTimeline);
 
-  document.getElementById("hypConfidence").addEventListener("input", function (e) {
-    document.getElementById("hypConfidenceValue").textContent = e.target.value;
-  });
-} 
-
-
+  document
+    .getElementById('hypConfidence')
+    .addEventListener('input', function (e) {
+      document.getElementById('hypConfidenceValue').textContent =
+        e.target.value;
+    });
+}
 
 // function loadCorePeopleAndLocations() {
 //   return loadCaseData()
 //     .then(loadPeople)
 //     .then(loadLocations)
 //     .then(hideLoadingStep)
-    // the rendering of the dashboard and dropdowns is now handled in loadAllData() after all data is loaded
-    // .then(function () {
-    //   hideLoadingStep();
-    //   renderDashboard();
-    //   populateAllDropdowns();
-    // });
+// the rendering of the dashboard and dropdowns is now handled in loadAllData() after all data is loaded
+// .then(function () {
+//   hideLoadingStep();
+//   renderDashboard();
+//   populateAllDropdowns();
+// });
 // }
 
 // DEMO 10: asynchronous loading of core data
@@ -127,14 +192,14 @@ async function loadCorePeopleAndLocations() {
     await loadLocations();
     hideLoadingStep();
   } catch (error) {
-    console.error("Error loading core data:", error);
+    console.error('Error loading core data:', error);
   }
 }
 
 // loadingStepsRemaining is set to 2 in appState.js, it is decremented after the milestones of loading 1) core data and 2) finishing the rendering
 // the loading spinner is hidden when loadingStepsRemaining reaches 0
 function loadAllData() {
-  showLoadingOverlay("Loading case file…");
+  showLoadingOverlay('Loading case file…');
   return loadCorePeopleAndLocations()
     .then(function () {
       renderDashboard();
@@ -150,4 +215,3 @@ function loadAllData() {
       hideLoadingStep();
     });
 }
-

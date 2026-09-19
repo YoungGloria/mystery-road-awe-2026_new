@@ -3,12 +3,10 @@ let filteredEvidence = [];
 let selectedEvidence = null;
 let bookmarks = [];
 
-let notesStore = {}; 
+let notesStore = {};
 
-
-const STORAGE_KEY_BOOKMARKS = "remotion_bookmarks";
-const STORAGE_KEY_NOTES = "remotion_notes";
-
+const STORAGE_KEY_BOOKMARKS = 'remotion_bookmarks';
+const STORAGE_KEY_NOTES = 'remotion_notes';
 
 function saveBookmarksToStorage() {
   localStorage.setItem(STORAGE_KEY_BOOKMARKS, JSON.stringify(bookmarks));
@@ -26,7 +24,7 @@ function loadBookmarksFromStorage() {
     const parsed = raw ? JSON.parse(raw) : [];
     bookmarks = Array.isArray(parsed) ? parsed : [];
   } catch (err) {
-    console.warn("Could not read stored bookmarks, starting empty", err);
+    console.warn('Could not read stored bookmarks, starting empty', err);
     bookmarks = [];
   }
 }
@@ -37,7 +35,7 @@ function saveNoteForEvidence(evidenceId, text) {
 }
 
 function loadNoteForEvidence(evidenceId) {
-  return notesStore[evidenceId] || "";
+  return notesStore[evidenceId] || '';
 }
 
 // DEMO 5: use try-catch analgous to loadBookmarksFromStorage to handle potential errors when loading notes from localStorage
@@ -50,16 +48,16 @@ function loadNotesFromStorage() {
     }
     notesStore = JSON.parse(raw);
   } catch (err) {
-    console.warn("Could not read stored notes, starting empty", err);
+    console.warn('Could not read stored notes, starting empty', err);
     notesStore = {};
   }
 }
 
 function addBookmark(evidenceId) {
-    if (!bookmarks.includes(evidenceId)) {
-        bookmarks.push(evidenceId);
-        saveBookmarksToStorage();
-    }
+  if (!bookmarks.includes(evidenceId)) {
+    bookmarks.push(evidenceId);
+    saveBookmarksToStorage();
+  }
 }
 
 function removeBookmark(evidenceId) {
@@ -71,22 +69,19 @@ function removeBookmark(evidenceId) {
 }
 
 function loadEvidenceData() {
-    return fetch("data/evidence.json")
+  return fetch('data/evidence.json')
     .then(function (res) {
       return res.json();
     })
     .then(function (data) {
       allEvidence = data;
       return allEvidence;
-      
     })
     .catch(function (err) {
-      console.error("Failed to load evidence.json", err);
-      alert("Evidence could not be loaded. Some views may be incomplete.");
+      console.error('Failed to load evidence.json', err);
+      alert('Evidence could not be loaded. Some views may be incomplete.');
     });
 }
-
-
 
 function findEvidenceById(id) {
   for (let i = 0; i < allEvidence.length; i++) {
@@ -97,17 +92,19 @@ function findEvidenceById(id) {
 
 function evidenceMentionsPerson(ev, person) {
   if (!ev.personIds) return false;
-  return ev.personIds.indexOf(person.id) !== -1 || ev.personIds.indexOf(person.name) !== -1;
+  return (
+    ev.personIds.indexOf(person.id) !== -1 ||
+    ev.personIds.indexOf(person.name) !== -1
+  );
 }
-
 
 // DEMO 2: selectedEvidence is now copied (or set to null) to avoid direct mutation of the original object in allEvidence
 function setSelectedEvidence(ev) {
-selectedEvidence = ev ? { ...ev } : null;
+  selectedEvidence = ev ? { ...ev } : null;
 }
 
 function clearSelectedEvidence() {
-    selectedEvidence = null; 
+  selectedEvidence = null;
 }
 
 //DEMO 2: shallow copy of filteredEvidence to avoid direct mutation of the original array
@@ -119,8 +116,29 @@ function setFilteredEvidence(data) {
 //used in main.js during initalization to conserve original behavior
 function loadNoteAsync(evidenceId) {
   return new Promise(function (resolve) {
-    resolve(notesStore[evidenceId] || "");
+    resolve(notesStore[evidenceId] || '');
   });
 }
 
-export { allEvidence, filteredEvidence, selectedEvidence, bookmarks, notesStore, setFilteredEvidence, applyStoredBookmarkFlags, loadEvidenceData, findEvidenceById, evidenceMentionsPerson, setSelectedEvidence, clearSelectedEvidence, addBookmark, removeBookmark, loadBookmarksFromStorage, saveBookmarksToStorage, saveNoteForEvidence, loadNoteForEvidence, loadNotesFromStorage, loadNoteAsync };
+export {
+  allEvidence,
+  filteredEvidence,
+  selectedEvidence,
+  bookmarks,
+  notesStore,
+  setFilteredEvidence,
+  applyStoredBookmarkFlags,
+  loadEvidenceData,
+  findEvidenceById,
+  evidenceMentionsPerson,
+  setSelectedEvidence,
+  clearSelectedEvidence,
+  addBookmark,
+  removeBookmark,
+  loadBookmarksFromStorage,
+  saveBookmarksToStorage,
+  saveNoteForEvidence,
+  loadNoteForEvidence,
+  loadNotesFromStorage,
+  loadNoteAsync,
+};

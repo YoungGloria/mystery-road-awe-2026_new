@@ -26,6 +26,7 @@
   },
   "homepage": "https://github.com/YoungGloria/mystery-road-awe-2026_new#readme",
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "eslint": "^10.11.0",
     "eslint-config-prettier": "^10.1.8",
     "prettier": "^3.9.8",

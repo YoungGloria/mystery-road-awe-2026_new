@@ -1,7 +1,6 @@
-import {evidenceMentionsPerson, allEvidence} from './evidenceState.js';
+import { evidenceMentionsPerson, allEvidence } from './evidenceState.js';
 
 let allPeople = [];
-
 
 //originally no catch for loading locations - intentional?
 // DEMO 3: added catch to handle errors when loading people.json
@@ -23,17 +22,17 @@ let allPeople = [];
 // DEMO 9: async/await version of loadPeople with try/catch for error handling and network error handling
 async function loadPeople() {
   try {
-    const peopleRes = await fetch("data/people.json");  
+    const peopleRes = await fetch('data/people.json');
 
     if (!peopleRes.ok) {
-      throw new Error("Error fetching people.json: " + peopleRes.statusText);
+      throw new Error('Error fetching people.json: ' + peopleRes.statusText);
     }
 
     allPeople = await peopleRes.json();
     return allPeople;
   } catch (err) {
-    console.error("Failed to load people.json", err);
-    alert("People could not be loaded. Some views may be incomplete.");
+    console.error('Failed to load people.json', err);
+    alert('People could not be loaded. Some views may be incomplete.');
   }
 }
 
