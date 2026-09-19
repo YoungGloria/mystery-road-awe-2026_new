@@ -3,7 +3,7 @@ import { allLocations } from '../states/locationState.js';
 import { navigateTo } from '../navigation.js';
 import { renderEvidenceList } from './evidenceCatalogue.js';
 
-let currentPeopleTab = 'people';
+let currentPeopleTab = 'people'; 
 
 function switchPeopleTab(tab) {
   currentPeopleTab = tab;

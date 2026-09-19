@@ -23,8 +23,7 @@ export default [
     rules: {
       'no-unused-vars': 'warn',
       'no-duplicate-imports': 'off',
-      'import-x/no-duplicates': 'error',
-      'import-x/no-unused-modules': 'error',
+      'import-x/no-duplicates' : 'error',
     },
   },
 ];
