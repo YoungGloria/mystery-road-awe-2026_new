@@ -5,7 +5,8 @@
   "main": "main.js",
   "private": true,
   "scripts": {
-    "test": "echo \"No test specified - coming soon\" && exit 0"
+    "test": "echo \"No test specified - coming soon\" && exit 0",
+    "dev": "vite"
   },
   "repository": {
     "type": "git",

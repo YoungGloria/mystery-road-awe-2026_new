@@ -110,8 +110,11 @@ function renderEvidenceCardHTML(ev) {
   let html = '<div class="evidence-card" data-id="' + ev.id + '">';
   html += '<button class="bookmark-btn ' + (isBookmarked ? "active" : "") + '" data-action="bookmark" data-id="' + ev.id + '" aria-label="Toggle bookmark for ' + ev.title + '"><span class="bookmark-icon">' + (isBookmarked ? "★" : "☆") + "</span></button>";
   html += "<h3>" + ev.title + "</h3>";
+  // Ex2_Demo2: Add text for HMR (Hot Module Replacement) handling for this module
+  // const text = "Test";
+  // html += `<p>${text}</p>`;
   html += '<div class="evidence-meta">' + ev.id + " &middot; " + ev.type + " &middot; " + formatDate(ev.timestamp) + "</div>";
-  html += '<div class="evidence-summary">' + ev.summary + "</div>";
+  html += '<div class="evidence-summary">' + ev.summary  +"</div>";
 
   if (ev.tags.indexOf("critical") !== -1) {
     html += '<span class="badge badge-critical">Critical</span>';
@@ -266,3 +269,15 @@ function openEvidenceModal(evidenceId) {
 }
 
 export { removeEvidenceViewLoading, openEvidenceModal, renderEvidenceList, handleSortChange, clearFilters, handleSearchInput, populateEvidenceDropdowns };
+
+// Ex2_Demo2: HMR (Hot Module Replacement) handling for this module
+if (import.meta.hot) {
+  import.meta.hot.accept((newModule) => {
+    console.log('HMR: Modul wurde ohne Reload ausgetauscht!');
+  
+    newModule.removeEvidenceViewLoading();
+    newModule.populateEvidenceDropdowns();
+    newModule.renderEvidenceList();
+  });
+}
+   
