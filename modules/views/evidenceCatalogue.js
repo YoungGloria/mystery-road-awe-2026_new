@@ -152,13 +152,13 @@ function handleBookmarkClick(evidenceId) {
 
   if (bookmarks.indexOf(evidenceId) === -1) {
     // bookmarks.push(evidenceId);
-    // ev.bookmarked = true;
+    ev.bookmarked = true;
     addBookmark(evidenceId);
   } else {
     // bookmarks = bookmarks.filter(function (id) {
     //   return id !== evidenceId;
     // });
-    // ev.bookmarked = false;
+    ev.bookmarked = false;
     removeBookmark(evidenceId);
   }
   saveBookmarksToStorage();

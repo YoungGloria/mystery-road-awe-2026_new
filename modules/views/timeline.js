@@ -68,7 +68,9 @@ function renderTimeline() {
     const eventLocationNames = [];
     for (let el = 0; el < item.locationIds.length; el++) {
       const evtLoc = findLocationById(item.locationIds[el]);
-      eventLocationNames.push(evtLoc || item.locationIds[el]);
+      // If the location is found, use its ID and name; otherwise, use the location ID.
+      //eventLocationNames.push(evtLoc || item.locationIds[el]);
+      eventLocationNames.push(evtLoc ? evtLoc.id + " - " + evtLoc.name : item.locationIds[el]);
     }
     if (eventLocationNames.length > 0) {
       html += '<p class="evidence-meta">Location: ' + eventLocationNames.join(", ") + "</p>";
