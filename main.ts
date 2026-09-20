@@ -34,36 +34,23 @@ import {
   saveCurrentNote,
 } from './modules/views/evidenceDetails.js';
 
-// loadTimelineData().then(function() {
-//   console.log("Timeline data loaded.");
-// });
-
-// loadPeople().then(function() {
-//   console.log(findPersonById("signal-scholar")); // oder welche ID auch immer in deinen People existiert
-// });
-
-// loadEvidenceData().then(function() {
-//   console.log(findEvidenceById("E01"));
-// });
-
-// loadLocations().then(function() {
-//   console.log(findLocationById("L01")); // oder welche ID auch immer in deinen Locations existiert
-// });
-
-// Promise.all([loadTimelineData(), loadPeople(), loadEvidenceData(), loadLocations()])
-//   .then(function() {
-//     console.log("All data loaded.");
-//     renderDashboard();
-//   });
+declare global {
+  interface Window {
+    navigateTo: typeof navigateTo;
+    switchPeopleTab: typeof switchPeopleTab;
+    handleSortChange: typeof handleSortChange;
+    saveHypothesis: typeof saveHypothesis;
+    closeEvidenceDetail: typeof closeEvidenceDetail;
+    saveCurrentNote: typeof saveCurrentNote;
+  }
+}
 
 // Init
-function initApp() {
+function initApp(): void {
   loadBookmarksFromStorage();
   loadNotesFromStorage();
   setupEventListeners();
 
-  // DEMO 3: loadNoteAsync returns a promise.
-  // the resulting value is unwrapped  and passed to the then() callback as firstNote
   loadAllData().then(function (data) {
     handleHashChange();
 
@@ -87,7 +74,7 @@ window.saveCurrentNote = saveCurrentNote;
 
 // event listeners
 
-function setupEventListeners() {
+function setupEventListeners(): void {
   window.addEventListener('hashchange', handleHashChange);
 
   // DEMO 4: let instead of var to ensure correct scoping (block!) in the event listener
@@ -95,77 +82,70 @@ function setupEventListeners() {
   let navButtons = document.querySelectorAll('.nav-btn');
   for (var i = 0; i < navButtons.length; i++) {
     // use let to ensure correct scoping in the event listener
-    navButtons[i].addEventListener('click', function () {
-      var targetView = navButtons[i].getAttribute('data-view');
+    const navButton = navButtons[i];
+    if (!navButton) continue;
+    navButton.addEventListener('click', function () {
+      var targetView = navButton.getAttribute('data-view');
       console.log('nav clicked:', targetView);
     });
   }
 
   document
     .getElementById('evidenceSearch')
-    .addEventListener('input', handleSearchInput);
+    ?.addEventListener('input', handleSearchInput);
 
   document
     .getElementById('filterType')
-    .addEventListener('change', renderEvidenceList);
+    ?.addEventListener('change', renderEvidenceList);
   document
     .getElementById('filterPerson')
-    .addEventListener('change', renderEvidenceList);
+    ?.addEventListener('change', renderEvidenceList);
   document
     .getElementById('filterLocation')
-    .addEventListener('change', renderEvidenceList);
+    ?.addEventListener('change', renderEvidenceList);
 
   // DEMO 1/DEMO 5: filterStatus is no longer handled by in-line-event handler, but by event listener
   // in-line event handlers are more prone to unexpected behavior such as accidental overwriting or double calls
   document
     .getElementById('filterStatus')
-    .addEventListener('change', renderEvidenceList);
+    ?.addEventListener('change', renderEvidenceList);
   //document.getElementById("filterStatus").setAttribute("onchange", "renderEvidenceList()");
 
   document
     .getElementById('filterRelevance')
-    .addEventListener('change', renderEvidenceList);
+    ?.addEventListener('change', renderEvidenceList);
 
   document
     .getElementById('clearFiltersBtn')
-    .addEventListener('click', clearFilters);
+    ?.addEventListener('click', clearFilters);
 
   document
     .getElementById('timelineOrder')
-    .addEventListener('change', renderTimeline);
+    ?.addEventListener('change', renderTimeline);
   document
     .getElementById('timelinePersonFilter')
-    .addEventListener('change', renderTimeline);
+    ?.addEventListener('change', renderTimeline);
   document
     .getElementById('timelineLocationFilter')
-    .addEventListener('change', renderTimeline);
+    ?.addEventListener('change', renderTimeline);
   document
     .getElementById('timelineTypeFilter')
-    .addEventListener('change', renderTimeline);
+    ?.addEventListener('change', renderTimeline);
 
   document
     .getElementById('hypConfidence')
-    .addEventListener('input', function (e) {
-      document.getElementById('hypConfidenceValue').textContent =
-        e.target.value;
+    ?.addEventListener('input', function (e) {
+      const valueElement = document.getElementById(
+        'hypConfidenceValue',
+      ) as HTMLElement | null;
+      const target = e.target as HTMLInputElement;
+      if (valueElement) {
+        valueElement.textContent = target.value;
+      }
     });
 }
 
-// function loadCorePeopleAndLocations() {
-//   return loadCaseData()
-//     .then(loadPeople)
-//     .then(loadLocations)
-//     .then(hideLoadingStep)
-// the rendering of the dashboard and dropdowns is now handled in loadAllData() after all data is loaded
-// .then(function () {
-//   hideLoadingStep();
-//   renderDashboard();
-//   populateAllDropdowns();
-// });
-// }
-
-// DEMO 10: asynchronous loading of core data
-async function loadCorePeopleAndLocations() {
+async function loadCorePeopleAndLocations(): Promise<void> {
   try {
     await loadCaseData();
     await loadPeople();
@@ -178,7 +158,7 @@ async function loadCorePeopleAndLocations() {
 
 // loadingStepsRemaining is set to 2 in appState.js, it is decremented after the milestones of loading 1) core data and 2) finishing the rendering
 // the loading spinner is hidden when loadingStepsRemaining reaches 0
-function loadAllData() {
+function loadAllData(): Promise<void> {
   showLoadingOverlay('Loading case file…');
   return loadCorePeopleAndLocations()
     .then(function () {

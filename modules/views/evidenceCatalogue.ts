@@ -18,37 +18,43 @@ import {
 import { currentPage } from '../states/appState.js';
 import { openEvidenceDetail } from './evidenceDetails.js';
 import { navigateTo } from '../navigation.js';
+import type { Evidence } from '../types.js';
 
 // DEMO 5: is never set to false in orignial code
-let evidenceViewLoading = true;
+let evidenceViewLoading: boolean = true;
 
 // allows only removeEvidenceViewLoading by setting evidenceViewLoading to false as this funktion is only called once after inital loading, it is not relevant vor re-rendering
 // if app is adapted to allow loading of new evidence data after initial load, this funktion must be adapted to allow setting evidenceViewLoading to true again
-function removeEvidenceViewLoading() {
+function removeEvidenceViewLoading(): void {
   evidenceViewLoading = false;
 }
 
-function getFilteredEvidence() {
+function getFilteredEvidence(): Evidence[] {
   const searchBox = document.getElementById('evidenceSearch');
-  const searchTerm = searchBox ? searchBox.value.toLowerCase().trim() : '';
-  const typeVal = document.getElementById('filterType').value;
-  const personVal = document.getElementById('filterPerson').value;
-  const locationVal = document.getElementById('filterLocation').value;
-  const statusVal = document.getElementById('filterStatus').value;
-  const relevanceVal = document.getElementById('filterRelevance').value;
+  const searchTerm = searchBox
+    ? (searchBox as HTMLInputElement).value.toLowerCase().trim()
+    : '';
+  const typeVal =
+    (document.getElementById('filterType') as HTMLSelectElement | null)?.value ??
+    '';
+  const personVal = (document.getElementById('filterPerson') as HTMLSelectElement | null)?.value ?? '';
+  const locationVal = (document.getElementById('filterLocation') as HTMLSelectElement | null)?.value ?? '';
+  const statusVal = (document.getElementById('filterStatus') as HTMLSelectElement | null)?.value ?? '';
+  const relevanceVal = (document.getElementById('filterRelevance') as HTMLSelectElement | null)?.value ?? '';
 
   const results = [];
   for (let i = 0; i < allEvidence.length; i++) {
     const item = allEvidence[i];
+    if (!item) continue;
     let matches = true;
 
     if (searchTerm) {
       const haystack = (
-        item.title +
+        item?.title +
         ' ' +
-        item.summary +
+        item?.summary +
         ' ' +
-        item.tags.join(' ')
+        item?.tags.join(' ')
       ).toLowerCase();
       if (haystack.indexOf(searchTerm) === -1) matches = false;
     }
@@ -76,15 +82,17 @@ function getFilteredEvidence() {
   return results;
 }
 
-function populateEvidenceDropdowns() {
+function populateEvidenceDropdowns(): void {
   const typeSelect = document.getElementById('filterType');
   const personSelect = document.getElementById('filterPerson');
   const locationSelect = document.getElementById('filterLocation');
   if (!typeSelect || !personSelect || !locationSelect) return;
 
-  const types = [];
+  const types: string[] = [];
   for (let i = 0; i < allEvidence.length; i++) {
-    const t = allEvidence[i].type.toLowerCase();
+    const evidence = allEvidence[i];
+    if (!evidence) continue;
+    const t = evidence.type.toLowerCase();
     if (types.indexOf(t) === -1) types.push(t);
   }
   typeSelect.innerHTML = '<option value="">All types</option>';
@@ -95,28 +103,32 @@ function populateEvidenceDropdowns() {
 
   personSelect.innerHTML = '<option value="">All people</option>';
   for (let p = 0; p < allPeople.length; p++) {
+    const person = allPeople[p];
+    if (!person) continue;
     personSelect.innerHTML +=
       '<option value="' +
-      allPeople[p].id +
+      person.id +
       '">' +
-      allPeople[p].name +
+      person.name +
       '</option>';
   }
 
   locationSelect.innerHTML = '<option value="">All locations</option>';
   for (let l = 0; l < allLocations.length; l++) {
+    const location = allLocations[l];
+    if (!location) continue;
     locationSelect.innerHTML +=
       '<option value="' +
-      allLocations[l].id +
+      location.id +
       '">' +
-      allLocations[l].id +
+      location.id +
       ' - ' +
-      allLocations[l].name +
+      location.name +
       '</option>';
   }
 }
 
-function renderEvidenceList() {
+function renderEvidenceList(): void {
   const container = document.getElementById('evidenceList');
   if (!container) return;
 
@@ -128,14 +140,16 @@ function renderEvidenceList() {
   }
   if (loadingIndicator) loadingIndicator.classList.add('hidden');
 
-  const results = getSortedAndFilteredEvidence(); // DEMO 5: sort filtered evidence before rendering
+  const results: Evidence[] = getSortedAndFilteredEvidence(); // DEMO 5: sort filtered evidence before rendering
 
   let html = '';
   if (results.length === 0) {
     html = '<p>No evidence matches the current filters.</p>';
   }
   for (let i = 0; i < results.length; i++) {
-    html += renderEvidenceCardHTML(results[i]);
+    const ev = results[i];
+    if (!ev) continue;
+    html += renderEvidenceCardHTML(ev);
   }
   container.innerHTML = html;
 
@@ -143,7 +157,7 @@ function renderEvidenceList() {
   container.addEventListener('click', handleEvidenceListClick);
 }
 
-function renderEvidenceCardHTML(ev) {
+function renderEvidenceCardHTML(ev: Evidence): string {
   const isBookmarked = bookmarks.indexOf(ev.id) !== -1;
   let html = '<div class="evidence-card" data-id="' + ev.id + '">';
   html +=
@@ -194,23 +208,27 @@ function renderEvidenceCardHTML(ev) {
   return html;
 }
 
-function handleEvidenceListClick(event) {
+function handleEvidenceListClick(event: Event): void {
   const target = event.target;
+  if (!(target instanceof HTMLElement)) return;
 
   if (target.dataset && target.dataset.action === 'bookmark') {
     event.stopPropagation();
-    handleBookmarkClick(target.dataset.id);
+    const evidenceId = target.dataset.id;
+    if (!evidenceId) return;
+    handleBookmarkClick(evidenceId);
     return;
   }
 
   const card = target.closest('.evidence-card');
   if (card) {
-    openEvidenceDetail(card.getAttribute('data-id'));
+    const evidenceId = card.getAttribute('data-id');
+    if (evidenceId) openEvidenceDetail(evidenceId);
   }
 }
 
 // DEMO 2: bookmarks are imported from evidenceState.js, so direct mutation is no longer possible. Instead, setter functions are used to add or remove bookmarks.
-function handleBookmarkClick(evidenceId) {
+function handleBookmarkClick(evidenceId: string): void {
   const ev = findEvidenceById(evidenceId);
   if (!ev) return;
 
@@ -229,8 +247,9 @@ function handleBookmarkClick(evidenceId) {
   if (currentPage === 'evidence') renderEvidenceList();
 }
 
-function getSortedAndFilteredEvidence() {
-  const sortValue = document.getElementById('sortEvidence').value;
+function getSortedAndFilteredEvidence(): Evidence[] {
+  const sortElement = document.getElementById('sortEvidence') as HTMLSelectElement | null;
+  const sortValue = sortElement?.value ?? '';
   const sorted = getFilteredEvidence().slice(); // DEMO 2: shallow copy of filteredEvidence to avoid direct mutation of the original array
 
   if (sortValue === 'title-asc') {
@@ -243,11 +262,11 @@ function getSortedAndFilteredEvidence() {
     });
   } else if (sortValue === 'date-asc') {
     sorted.sort(function (a, b) {
-      return new Date(a.timestamp) - new Date(b.timestamp);
+      return new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime();
     });
   } else {
     sorted.sort(function (a, b) {
-      return new Date(b.timestamp) - new Date(a.timestamp);
+      return new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime();
     });
   }
   return setFilteredEvidence(sorted);
@@ -258,16 +277,16 @@ function handleSortChange() {
 }
 
 function clearFilters() {
-  document.getElementById('evidenceSearch').value = '';
-  document.getElementById('filterType').value = '';
-  document.getElementById('filterPerson').value = '';
-  document.getElementById('filterLocation').value = '';
-  document.getElementById('filterStatus').value = '';
-  document.getElementById('filterRelevance').value = '';
+  (document.getElementById('evidenceSearch') as HTMLInputElement).value = '' ;
+  (document.getElementById('filterType') as HTMLSelectElement).value = '';
+  (document.getElementById('filterPerson') as HTMLInputElement).value = '';
+  (document.getElementById('filterLocation') as HTMLInputElement).value = '';
+  (document.getElementById('filterStatus') as HTMLSelectElement).value = '';
+  (document.getElementById('filterRelevance') as HTMLSelectElement).value = '';
   renderEvidenceList();
 }
 
-function simulateAsyncSearch(term) {
+function simulateAsyncSearch(term: string): Promise<string> {
   return new Promise(function (resolve) {
     setTimeout(function () {
       resolve(term);
@@ -277,8 +296,8 @@ function simulateAsyncSearch(term) {
 
 let latestSearchRequestId = 0;
 
-function handleSearchInput(event) {
-  const term = event.target.value;
+function handleSearchInput(event: Event): void {
+  const term = (event.target as HTMLInputElement).value;
   const requestId = ++latestSearchRequestId;
 
   simulateAsyncSearch(term).then(function (resolvedTerm) {
@@ -293,7 +312,7 @@ function handleSearchInput(event) {
 // DEMO 4: modal element is now removed after use, this avoids building up a large number of listeners
 let modalCloseListenerCount = 0;
 
-function openEvidenceModal(evidenceId) {
+function openEvidenceModal(evidenceId: string): void {
   const ev = findEvidenceById(evidenceId);
   if (!ev) return;
 
@@ -328,20 +347,25 @@ function openEvidenceModal(evidenceId) {
   modalCloseListenerCount++;
   console.log('modal opened, active close listeners:', modalCloseListenerCount);
 
-  modal.addEventListener('click', function (e) {
+  modal.addEventListener('click', function (e: MouseEvent) {
+    const target = e.target;
+    if (!(target instanceof Element)) {
+      return;
+    }
+
     if (
-      e.target.classList.contains('modal-close-btn') ||
-      e.target.classList.contains('modal-backdrop')
+      target.classList.contains('modal-close-btn') ||
+      target.classList.contains('modal-backdrop')
     ) {
-      //modal.innerHTML = "";
       modal.remove();
     }
-    if (e.target.getAttribute && e.target.getAttribute('data-open-full')) {
+    const evidenceId = target.getAttribute('data-open-full');
+    if (evidenceId) {
       //modal.innerHTML = "";
       modal.remove();
       navigateTo('evidence');
       setTimeout(function () {
-        openEvidenceDetail(e.target.getAttribute('data-open-full'));
+        openEvidenceDetail(evidenceId);
       }, 0);
     }
   });
@@ -357,13 +381,13 @@ export {
   populateEvidenceDropdowns,
 };
 
-// Ex2_Demo2: HMR (Hot Module Replacement) handling for this module
-if (import.meta.hot) {
-  import.meta.hot.accept((newModule) => {
-    console.log('HMR: Modul wurde ohne Reload ausgetauscht!');
+// // Ex2_Demo2: HMR (Hot Module Replacement) handling for this module
+// if (import.meta.hot) {
+//   import.meta.hot.accept((newModule) => {
+//     console.log('HMR: Modul wurde ohne Reload ausgetauscht!');
 
-    newModule.removeEvidenceViewLoading();
-    newModule.populateEvidenceDropdowns();
-    newModule.renderEvidenceList();
-  });
-}
+//     newModule.removeEvidenceViewLoading();
+//     newModule.populateEvidenceDropdowns();
+//     newModule.renderEvidenceList();
+//   });
+// }

@@ -15,12 +15,12 @@ import {
   populateHypothesisDropdowns,
 } from './views/workspace.js';
 
-function navigateTo(viewName) {
+function navigateTo(viewName: string): void {
   window.location.hash = viewName;
   // handleHashChange() will pick this up via the hashchange listener
 }
 
-function showLoadingOverlay(msg) {
+function showLoadingOverlay(msg: string): void {
   const overlay = document.getElementById('loadingOverlay');
   const text = document.getElementById('loadingText');
   if (text) text.textContent = msg;
@@ -28,7 +28,7 @@ function showLoadingOverlay(msg) {
 }
 
 // Decrement the loading steps counter and hide the overlay if all steps are done
-function hideLoadingStep() {
+function hideLoadingStep(): void {
   const remaining = decrementLoadingSteps();
   if (remaining <= 0) {
     const overlay = document.getElementById('loadingOverlay');
@@ -50,17 +50,25 @@ function handleHashChange() {
   }
   setCurrentPage(hash); //  currentPage = hash;
 
+  // Major issue! as html element masked the wrong issue: noUncheckedIndexedAccess rule does not allow potential undefined values to be used without checking for undefined first. So we need to check if the element exists before using it.
+  // without undefined guard, the as HTMLElement masked the underlying issue from ts
   const sections = document.querySelectorAll('.view');
   for (let i = 0; i < sections.length; i++) {
-    sections[i].classList.remove('active');
+    // good!  check if the element exists before using it
+    const section = sections[i];
+    if (!section) continue;
+    section.classList.remove('active');
+  //bad!  (sections[i] as HTMLElement).classList.remove('active');
   }
-  document.getElementById('view-' + hash).classList.add('active');
+  document.getElementById('view-' + hash)?.classList.add('active');
 
   const navButtons = document.querySelectorAll('.nav-btn');
   for (let n = 0; n < navButtons.length; n++) {
-    navButtons[n].classList.remove('active');
-    if (navButtons[n].getAttribute('data-view') === hash) {
-      navButtons[n].classList.add('active');
+    const navButton = navButtons[n];
+    if (!navButton) continue;
+    (navButton).classList.remove('active');
+    if (navButton.getAttribute('data-view') === hash) {
+      navButton.classList.add('active');
     }
   }
 

@@ -5,29 +5,30 @@ import { allLocations } from '../states/locationState.js';
 import { allTimeline } from '../states/timelineState.js';
 import { getStatusBadgeClass, formatDate } from '../helpers.js';
 
-function renderDashboard() {
+function renderDashboard(): void {
   const container = document.getElementById('dashboardContent');
   if (!container) return;
 
   let reviewedCount = 0;
   for (let i = 0; i < allEvidence.length; i++) {
-    if ((allEvidence[i].status || '').toLowerCase() === 'reviewed')
+    const evidence = allEvidence[i];
+    if ((evidence?.status || '').toLowerCase() === 'reviewed')
       reviewedCount++;
   }
 
-  const progressPct =
+  const progressPct: number =
     allEvidence.length === 0
       ? 0
       : Math.round((reviewedCount / allEvidence.length) * 100);
 
   let html = '';
   html += '<div class="case-summary-card">';
-  html += '<h3>' + (caseData.title || 'Case') + '</h3>';
+  html += '<h3>' + (caseData?.title || 'Case') + '</h3>';
   html +=
     '<p><span class="badge badge-flagged">' +
-    (caseData.status || 'unknown').toUpperCase() +
+    (caseData?.status || 'unknown').toUpperCase() +
     '</span></p>';
-  html += '<p>' + (caseData.summary || '') + '</p>';
+  html += '<p>' + (caseData?.summary || '') + '</p>';
   html += '</div>';
 
   html += '<div class="stat-grid">';
@@ -58,13 +59,13 @@ function renderDashboard() {
     const ev = recentEvidence[e];
     html +=
       '<div class="mini-list-item"><strong>' +
-      ev.id +
+      ev?.id  +
       '</strong> &mdash; ' +
-      ev.title +
+      ev?.title +
       ' <span class="badge ' +
-      getStatusBadgeClass(ev.status) +
+      getStatusBadgeClass(ev?.status) +
       '">' +
-      ev.status +
+      ev?.status +
       '</span></div>';
   }
   html += '</div>';
@@ -78,9 +79,9 @@ function renderDashboard() {
     const evt = recentTimeline[t];
     html +=
       '<div class="mini-list-item"><strong>' +
-      formatDate(evt.time) +
+      formatDate(evt?.time) +
       '</strong><br>' +
-      evt.title +
+      evt?.title +
       '</div>';
   }
   html += '</div>';
@@ -91,7 +92,7 @@ function renderDashboard() {
 }
 
 // currently not used in other moduls, thus not exported
-function statCardHTML(value, label) {
+function statCardHTML(value: number, label: string): string {
   return (
     '<div class="stat-card"><div class="stat-value">' +
     value +

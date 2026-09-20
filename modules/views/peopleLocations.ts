@@ -5,12 +5,16 @@ import { renderEvidenceList } from './evidenceCatalogue.js';
 
 let currentPeopleTab = 'people'; 
 
-function switchPeopleTab(tab) {
+function switchPeopleTab(tab: string): void {
   currentPeopleTab = tab;
   const peoplePanel = document.getElementById('peoplePanel');
   const locationsPanel = document.getElementById('locationsPanel');
   const peopleTabBtn = document.getElementById('tabPeopleBtn');
   const locationsTabBtn = document.getElementById('tabLocationsBtn');
+
+  if (!peoplePanel || !locationsPanel || !peopleTabBtn || !locationsTabBtn) {
+    return;
+  }
 
   if (tab === 'people') {
     peoplePanel.classList.remove('hidden');
@@ -25,11 +29,12 @@ function switchPeopleTab(tab) {
   }
 }
 
-function renderPeople() {
+function renderPeople(): void {
   const container = document.getElementById('peoplePanel');
   let html = '';
   for (let i = 0; i < allPeople.length; i++) {
     const person = allPeople[i];
+    if (!person) continue;
     const count = countEvidenceForPerson(person);
 
     html += '<div class="person-card">';
@@ -69,28 +74,32 @@ function renderPeople() {
       '">view</button></p>';
     html += '</div>';
   }
+  if (!container) {
+    console.error('Failed to find people panel');
+    return;
+  }
   container.innerHTML = html;
 
   const links = container.querySelectorAll('.evidence-count-link');
   for (let l = 0; l < links.length; l++) {
-    // DEMO 10: use arrow function (twice!) to avoid issues with "this" and closures
-    links[l].addEventListener('click', (e) => {
-      const personId = e.target.getAttribute('data-person-id');
-      document.getElementById('filterPerson').value = personId;
+    const link = links[l];
+    if (!link) continue;
+
+    // examples on neccessary as HTMLElement casts
+    // 1) getElementById returns HTMLElement or null, which is too generic for .value. 
+    // The index.html uses it in <select>, so HTMLElement is the correct type. 
+    // 2) currentTarget has type EventTarget - which is too generic for getAttribute(). Only (HTML-)Element has that method.
+
+    link.addEventListener('click', (e) => {
+      const personId = (e.currentTarget as HTMLElement).getAttribute('data-person-id');
+      const filterPerson = document.getElementById('filterPerson') as HTMLInputElement | null;
+      if (!personId || !filterPerson) return;
+      filterPerson.value = personId;
       navigateTo('evidence');
       setTimeout(() => {
         renderEvidenceList();
       }, 0);
     });
-
-    // links[l].addEventListener("click", function (e) {
-    //   const personId = e.target.getAttribute("data-person-id");
-    //   document.getElementById("filterPerson").value = personId;
-    //   navigateTo("evidence");
-    //   setTimeout(function () {
-    //     renderEvidenceList();
-    //   }, 0);
-    // });
   }
 }
 
@@ -99,6 +108,7 @@ function renderLocations() {
   let html = '';
   for (let i = 0; i < allLocations.length; i++) {
     const loc = allLocations[i];
+    if (!loc) continue;
     html += '<div class="location-card">';
     html += '<h3>' + loc.id + ' &mdash; ' + loc.name + '</h3>';
     html += '<p>' + loc.description + '</p>';
@@ -107,6 +117,10 @@ function renderLocations() {
       html += '<li>' + loc.contains[c] + '</li>';
     }
     html += '</ul></div>';
+  }
+  if (!container) {
+    console.error('Failed to find locations panel');
+    return;
   }
   container.innerHTML = html;
 }
