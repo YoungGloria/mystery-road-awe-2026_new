@@ -2,7 +2,7 @@ import type { Location } from '../types.js';
 
 let allLocations: Location[] = [];
 
-async function loadLocations(): Promise<Location[]>  {
+async function loadLocations(): Promise<Location[]> {
   try {
     const locationsRes = await fetch('data/locations.json');
 
@@ -12,7 +12,7 @@ async function loadLocations(): Promise<Location[]>  {
       );
     }
 
-    const data  = (await locationsRes.json()) as Location[];
+    const data = (await locationsRes.json()) as Location[];
     allLocations = data;
     return allLocations;
   } catch (err) {

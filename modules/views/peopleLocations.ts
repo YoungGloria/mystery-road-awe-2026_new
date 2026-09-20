@@ -3,7 +3,7 @@ import { allLocations } from '../states/locationState.js';
 import { navigateTo } from '../navigation.js';
 import { renderEvidenceList } from './evidenceCatalogue.js';
 
-let currentPeopleTab = 'people'; 
+let currentPeopleTab = 'people';
 
 function switchPeopleTab(tab: string): void {
   currentPeopleTab = tab;
@@ -86,13 +86,17 @@ function renderPeople(): void {
     if (!link) continue;
 
     // examples on neccessary as HTMLElement casts
-    // 1) getElementById returns HTMLElement or null, which is too generic for .value. 
-    // The index.html uses it in <select>, so HTMLElement is the correct type. 
+    // 1) getElementById returns HTMLElement or null, which is too generic for .value.
+    // The index.html uses it in <select>, so HTMLElement is the correct type.
     // 2) currentTarget has type EventTarget - which is too generic for getAttribute(). Only (HTML-)Element has that method.
 
     link.addEventListener('click', (e) => {
-      const personId = (e.currentTarget as HTMLElement).getAttribute('data-person-id');
-      const filterPerson = document.getElementById('filterPerson') as HTMLInputElement | null;
+      const personId = (e.currentTarget as HTMLElement).getAttribute(
+        'data-person-id'
+      );
+      const filterPerson = document.getElementById(
+        'filterPerson'
+      ) as HTMLInputElement | null;
       if (!personId || !filterPerson) return;
       filterPerson.value = personId;
       navigateTo('evidence');

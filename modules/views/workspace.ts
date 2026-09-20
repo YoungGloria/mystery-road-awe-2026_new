@@ -110,11 +110,7 @@ function populateHypothesisDropdowns() {
     const person = allPeople[p];
     if (!person) continue;
     suspectSelect.innerHTML +=
-      '<option value="' +
-      person.id +
-      '">' +
-      person.name +
-      '</option>';
+      '<option value="' + person.id + '">' + person.name + '</option>';
   }
   (suspectSelect as HTMLSelectElement).value = currentSuspect;
 
@@ -123,28 +119,27 @@ function populateHypothesisDropdowns() {
     const ev = allEvidence[i];
     if (!ev) continue;
     evidenceSelect.innerHTML +=
-      '<option value="' +
-      ev.id +
-      '">' +
-      ev.id +
-      ' - ' +
-      ev.title +
-      '</option>';
+      '<option value="' + ev.id + '">' + ev.id + ' - ' + ev.title + '</option>';
   }
 }
 
 function saveHypothesis() {
   const evidenceElement = document.getElementById('hypEvidence');
   const draft = {
-    suspectId: (document.getElementById('hypSuspect') as HTMLSelectElement).value,
+    suspectId: (document.getElementById('hypSuspect') as HTMLSelectElement)
+      .value,
     nature: (document.getElementById('hypNature') as HTMLInputElement).value,
     evidenceIds:
       evidenceElement instanceof HTMLSelectElement
         ? getSelectedOptions(evidenceElement)
         : [],
-    confidence: (document.getElementById('hypConfidence') as HTMLInputElement).value,
-    explanation: (document.getElementById('hypExplanation') as HTMLTextAreaElement).value,
-    alternative: (document.getElementById('hypAlternative') as HTMLInputElement).value,
+    confidence: (document.getElementById('hypConfidence') as HTMLInputElement)
+      .value,
+    explanation: (
+      document.getElementById('hypExplanation') as HTMLTextAreaElement
+    ).value,
+    alternative: (document.getElementById('hypAlternative') as HTMLInputElement)
+      .value,
     savedAt: new Date().toISOString(),
   };
 
@@ -157,7 +152,9 @@ function saveHypothesis() {
   }
 
   const msg = document.getElementById('hypothesisSavedMsg');
-  if (!msg) {return;}
+  if (!msg) {
+    return;
+  }
   msg.classList.remove('hidden');
   setTimeout(function () {
     msg.classList.add('hidden');
@@ -172,21 +169,28 @@ function loadHypothesisFromStorage() {
 
     const draft = JSON.parse(raw);
 
-    (document.getElementById('hypSuspect') as HTMLSelectElement).value = draft.suspectId || '';
-    (document.getElementById('hypNature') as HTMLInputElement).value = draft.nature || '';
-    (document.getElementById('hypConfidence') as HTMLInputElement).value = draft.confidence || 50;
-    (document.getElementById('hypConfidenceValue') as HTMLSpanElement).textContent =
+    (document.getElementById('hypSuspect') as HTMLSelectElement).value =
+      draft.suspectId || '';
+    (document.getElementById('hypNature') as HTMLInputElement).value =
+      draft.nature || '';
+    (document.getElementById('hypConfidence') as HTMLInputElement).value =
       draft.confidence || 50;
-    (document.getElementById('hypExplanation') as HTMLTextAreaElement).value = draft.explanation || '';
-    (document.getElementById('hypAlternative') as HTMLInputElement).value = draft.alternative || '';
+    (
+      document.getElementById('hypConfidenceValue') as HTMLSpanElement
+    ).textContent = draft.confidence || 50;
+    (document.getElementById('hypExplanation') as HTMLTextAreaElement).value =
+      draft.explanation || '';
+    (document.getElementById('hypAlternative') as HTMLInputElement).value =
+      draft.alternative || '';
 
-    const evidenceSelect = document.getElementById('hypEvidence') as HTMLSelectElement;
+    const evidenceSelect = document.getElementById(
+      'hypEvidence'
+    ) as HTMLSelectElement;
     const savedIds = draft.evidenceIds || [];
     for (let i = 0; i < evidenceSelect.options.length; i++) {
       const option = evidenceSelect.options[i];
       if (!option) continue;
-      option.selected =
-        savedIds.indexOf(option.value) !== -1;
+      option.selected = savedIds.indexOf(option.value) !== -1;
     }
   } catch (err) {
     console.warn('Could not read stored hypothesis, starting empty', err);

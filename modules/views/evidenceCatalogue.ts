@@ -35,12 +35,20 @@ function getFilteredEvidence(): Evidence[] {
     ? (searchBox as HTMLInputElement).value.toLowerCase().trim()
     : '';
   const typeVal =
-    (document.getElementById('filterType') as HTMLSelectElement | null)?.value ??
-    '';
-  const personVal = (document.getElementById('filterPerson') as HTMLSelectElement | null)?.value ?? '';
-  const locationVal = (document.getElementById('filterLocation') as HTMLSelectElement | null)?.value ?? '';
-  const statusVal = (document.getElementById('filterStatus') as HTMLSelectElement | null)?.value ?? '';
-  const relevanceVal = (document.getElementById('filterRelevance') as HTMLSelectElement | null)?.value ?? '';
+    (document.getElementById('filterType') as HTMLSelectElement | null)
+      ?.value ?? '';
+  const personVal =
+    (document.getElementById('filterPerson') as HTMLSelectElement | null)
+      ?.value ?? '';
+  const locationVal =
+    (document.getElementById('filterLocation') as HTMLSelectElement | null)
+      ?.value ?? '';
+  const statusVal =
+    (document.getElementById('filterStatus') as HTMLSelectElement | null)
+      ?.value ?? '';
+  const relevanceVal =
+    (document.getElementById('filterRelevance') as HTMLSelectElement | null)
+      ?.value ?? '';
 
   const results = [];
   for (let i = 0; i < allEvidence.length; i++) {
@@ -106,11 +114,7 @@ function populateEvidenceDropdowns(): void {
     const person = allPeople[p];
     if (!person) continue;
     personSelect.innerHTML +=
-      '<option value="' +
-      person.id +
-      '">' +
-      person.name +
-      '</option>';
+      '<option value="' + person.id + '">' + person.name + '</option>';
   }
 
   locationSelect.innerHTML = '<option value="">All locations</option>';
@@ -248,7 +252,9 @@ function handleBookmarkClick(evidenceId: string): void {
 }
 
 function getSortedAndFilteredEvidence(): Evidence[] {
-  const sortElement = document.getElementById('sortEvidence') as HTMLSelectElement | null;
+  const sortElement = document.getElementById(
+    'sortEvidence'
+  ) as HTMLSelectElement | null;
   const sortValue = sortElement?.value ?? '';
   const sorted = getFilteredEvidence().slice(); // DEMO 2: shallow copy of filteredEvidence to avoid direct mutation of the original array
 
@@ -277,7 +283,7 @@ function handleSortChange() {
 }
 
 function clearFilters() {
-  (document.getElementById('evidenceSearch') as HTMLInputElement).value = '' ;
+  (document.getElementById('evidenceSearch') as HTMLInputElement).value = '';
   (document.getElementById('filterType') as HTMLSelectElement).value = '';
   (document.getElementById('filterPerson') as HTMLInputElement).value = '';
   (document.getElementById('filterLocation') as HTMLInputElement).value = '';

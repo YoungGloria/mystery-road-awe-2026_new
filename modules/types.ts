@@ -1,6 +1,6 @@
-export type EvidenceStatus = "unreviewed" | "reviewed" | "flagged";
-export type EvidenceRelevance = "unknown" | "relevant" | "irrelevant";
-export type TimelineCertainty = "confirmed" | "reported" | "contradictory";
+export type EvidenceStatus = 'unreviewed' | 'reviewed' | 'flagged';
+export type EvidenceRelevance = 'unknown' | 'relevant' | 'irrelevant';
+export type TimelineCertainty = 'confirmed' | 'reported' | 'contradictory';
 
 export interface Evidence {
   id: string;

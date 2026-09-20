@@ -20,5 +20,5 @@
     "moduleDetection": "force",
     "skipLibCheck": true
   },
-   "include": ["modules/**/*.ts", "*.ts", "modules/states/appState.js"]
+  "include": ["modules/**/*.ts", "*.ts", "modules/states/appState.js"]
 }

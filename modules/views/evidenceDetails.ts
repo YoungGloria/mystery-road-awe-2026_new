@@ -10,7 +10,7 @@ import { findLocationById } from '../states/locationState.js';
 import { formatDate } from '../helpers.js';
 import { viewRendered } from '../states/appState.js';
 import { renderEvidenceList } from './evidenceCatalogue.js';
-import type { Evidence, EvidenceStatus, EvidenceRelevance} from '../types.js';
+import type { Evidence, EvidenceStatus, EvidenceRelevance } from '../types.js';
 
 function openEvidenceDetail(evidenceId: string): void {
   const ev = findEvidenceById(evidenceId);
@@ -129,7 +129,9 @@ function renderEvidenceDetail(ev: Evidence): void {
 
   section.innerHTML = html;
 
-  const noteInputEl = document.getElementById('evidenceNoteInput') as HTMLTextAreaElement | null;
+  const noteInputEl = document.getElementById(
+    'evidenceNoteInput'
+  ) as HTMLTextAreaElement | null;
   const notePreviewEl = document.getElementById('notePreview');
 
   if (noteInputEl) {
@@ -140,11 +142,17 @@ function renderEvidenceDetail(ev: Evidence): void {
     notePreviewEl.textContent = storedNote; // Note preview is set using textContent to avoid unsafe innerHTML rendering.
   }
 
-  const statusSelect = document.getElementById('detailStatusSelect') as HTMLSelectElement | null;
+  const statusSelect = document.getElementById(
+    'detailStatusSelect'
+  ) as HTMLSelectElement | null;
   if (statusSelect) {
     statusSelect.addEventListener('change', function (e) {
       const value = (e.target as HTMLSelectElement).value;
-      if (value === 'unreviewed' || value === 'reviewed' || value === 'flagged') {
+      if (
+        value === 'unreviewed' ||
+        value === 'reviewed' ||
+        value === 'flagged'
+      ) {
         ev.status = value;
       }
       renderEvidenceDetail(ev);
@@ -152,11 +160,17 @@ function renderEvidenceDetail(ev: Evidence): void {
     });
   }
 
-  const relevanceSelect = document.getElementById('detailRelevanceSelect') as HTMLSelectElement | null;
+  const relevanceSelect = document.getElementById(
+    'detailRelevanceSelect'
+  ) as HTMLSelectElement | null;
   if (relevanceSelect) {
     relevanceSelect.addEventListener('change', function (e) {
       const value = (e.target as HTMLSelectElement).value;
-      if (value === 'unknown' || value === 'relevant' || value === 'irrelevant') {
+      if (
+        value === 'unknown' ||
+        value === 'relevant' ||
+        value === 'irrelevant'
+      ) {
         ev.relevance = value;
       }
       renderEvidenceDetail(ev);
@@ -165,7 +179,11 @@ function renderEvidenceDetail(ev: Evidence): void {
   }
 }
 
-function statusOptionHTML(current: Evidence['status'] | Evidence['relevance'], value: EvidenceStatus | EvidenceRelevance, label: string): string {
+function statusOptionHTML(
+  current: Evidence['status'] | Evidence['relevance'],
+  value: EvidenceStatus | EvidenceRelevance,
+  label: string
+): string {
   const currentLower = (current || '').toLowerCase();
   const selected = currentLower === value ? ' selected' : '';
   return '<option value="' + value + '"' + selected + '>' + label + '</option>';
@@ -173,7 +191,9 @@ function statusOptionHTML(current: Evidence['status'] | Evidence['relevance'], v
 
 // DEMO 8: text is now shown in the note preview using textContent instead of innerHTML to avoid unsafe rendering
 function saveCurrentNote() {
-  const textarea = document.getElementById('evidenceNoteInput') as HTMLTextAreaElement | null;
+  const textarea = document.getElementById(
+    'evidenceNoteInput'
+  ) as HTMLTextAreaElement | null;
   if (!textarea) return;
   const evidenceId = textarea.getAttribute('data-evidence-id');
   if (!evidenceId) return;

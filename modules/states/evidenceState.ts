@@ -26,7 +26,7 @@ function applyStoredBookmarkFlags(): void {
 function loadBookmarksFromStorage(): void {
   try {
     const raw = localStorage.getItem(STORAGE_KEY_BOOKMARKS);
-    const parsed = raw ? JSON.parse(raw) as string[] : [];
+    const parsed = raw ? (JSON.parse(raw) as string[]) : [];
     bookmarks = Array.isArray(parsed) ? parsed : [];
   } catch (err) {
     console.warn('Could not read stored bookmarks, starting empty', err);
@@ -79,7 +79,7 @@ async function loadEvidenceData(): Promise<Evidence[] | undefined> {
     if (!res.ok) {
       throw new Error('Failed to fetch evidence.json: ' + res.statusText);
     }
-    const data = (await res.json() as Evidence[]).map((evidence) => ({
+    const data = ((await res.json()) as Evidence[]).map((evidence) => ({
       ...evidence,
       status: evidence.status.toLowerCase() as Evidence['status'],
       relevance: evidence.relevance.toLowerCase() as Evidence['relevance'],

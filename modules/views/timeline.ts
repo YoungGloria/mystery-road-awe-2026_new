@@ -15,11 +15,7 @@ function populateTimelineDropdowns(): void {
     const person = allPeople[p];
     if (!person) continue;
     personSelect.innerHTML +=
-      '<option value="' +
-      person.id +
-      '">' +
-      person.name +
-      '</option>';
+      '<option value="' + person.id + '">' + person.name + '</option>';
   }
 
   locationSelect.innerHTML = '<option value="">All locations</option>';
@@ -27,19 +23,14 @@ function populateTimelineDropdowns(): void {
     const loc = allLocations[l];
     if (!loc) continue;
     locationSelect.innerHTML +=
-      '<option value="' +
-      loc.id +
-      '">' +
-      loc.id +
-      '</option>';
+      '<option value="' + loc.id + '">' + loc.id + '</option>';
   }
 
   const types = [];
   for (let i = 0; i < allTimeline.length; i++) {
     const evt = allTimeline[i];
     if (!evt) continue;
-    if (types.indexOf(evt.type) === -1)
-      types.push(evt.type);
+    if (types.indexOf(evt.type) === -1) types.push(evt.type);
   }
   typeSelect.innerHTML = '<option value="">All event types</option>';
   for (let t = 0; t < types.length; t++) {

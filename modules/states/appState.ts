@@ -30,7 +30,7 @@ async function loadCaseData(): Promise<CaseData | null> {
       throw new Error('Error fetching case.json: ' + caseRes.statusText);
     }
 
-    caseData = await caseRes.json() as CaseData;
+    caseData = (await caseRes.json()) as CaseData;
     return caseData;
   } catch (err) {
     console.error('Failed to load case.json', err);

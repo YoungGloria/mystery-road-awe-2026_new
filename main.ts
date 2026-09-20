@@ -136,7 +136,7 @@ function setupEventListeners(): void {
     .getElementById('hypConfidence')
     ?.addEventListener('input', function (e) {
       const valueElement = document.getElementById(
-        'hypConfidenceValue',
+        'hypConfidenceValue'
       ) as HTMLElement | null;
       const target = e.target as HTMLInputElement;
       if (valueElement) {

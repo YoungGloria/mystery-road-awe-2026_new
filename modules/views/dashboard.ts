@@ -12,8 +12,7 @@ function renderDashboard(): void {
   let reviewedCount = 0;
   for (let i = 0; i < allEvidence.length; i++) {
     const evidence = allEvidence[i];
-    if ((evidence?.status || '').toLowerCase() === 'reviewed')
-      reviewedCount++;
+    if ((evidence?.status || '').toLowerCase() === 'reviewed') reviewedCount++;
   }
 
   const progressPct: number =
@@ -59,7 +58,7 @@ function renderDashboard(): void {
     const ev = recentEvidence[e];
     html +=
       '<div class="mini-list-item"><strong>' +
-      ev?.id  +
+      ev?.id +
       '</strong> &mdash; ' +
       ev?.title +
       ' <span class="badge ' +

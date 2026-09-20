@@ -58,7 +58,7 @@ function handleHashChange() {
     const section = sections[i];
     if (!section) continue;
     section.classList.remove('active');
-  //bad!  (sections[i] as HTMLElement).classList.remove('active');
+    //bad!  (sections[i] as HTMLElement).classList.remove('active');
   }
   document.getElementById('view-' + hash)?.classList.add('active');
 
@@ -66,7 +66,7 @@ function handleHashChange() {
   for (let n = 0; n < navButtons.length; n++) {
     const navButton = navButtons[n];
     if (!navButton) continue;
-    (navButton).classList.remove('active');
+    navButton.classList.remove('active');
     if (navButton.getAttribute('data-view') === hash) {
       navButton.classList.add('active');
     }

@@ -3,7 +3,6 @@ import type { Person } from '../types.js';
 
 let allPeople: Person[] = [];
 
-  
 async function loadPeople(): Promise<Person[]> {
   try {
     const peopleRes = await fetch('data/people.json');
