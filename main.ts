@@ -174,4 +174,7 @@ function loadAllData(): Promise<void> {
       renderTimeline();
       hideLoadingStep();
     });
+
+    // DEMO 10: TS error
+    const test: string = 123; 
 }
