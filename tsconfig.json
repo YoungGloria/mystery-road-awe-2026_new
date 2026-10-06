@@ -27,5 +27,5 @@
     "*.ts",
     "*.tsx",
     "modules/states/appState.js"
-  ]
+, "pages/PlaceholderPage.tsx"  ]
 }

@@ -1,16 +1,23 @@
 import { AppHeader } from './components/AppHeader';
+import { useCaseData } from './hooks/useCaseData';
 import { useHashRoute } from './hooks/useHashRoute';
-import { PlaceholderPage } from './PlaceholderPage';
+import { DashboardPage } from './pages/DashboardPage';
+import { PlaceholderPage } from './pages/PlaceholderPage';
 import { VIEWS, type ViewId } from './routes';
 
 export function App() {
   const view = useHashRoute();
+  const data = useCaseData();
 
   return (
     <>
       <AppHeader currentView={view} />
       <main className="app-main">
-        <CurrentView view={view} />
+        {data.status === 'loading' ? (
+          <p>Loading case file&hellip;</p>
+        ) : (
+          <CurrentView view={view} data={data} />
+        )}
       </main>
       <footer className="app-footer">
         <p>
@@ -22,7 +29,25 @@ export function App() {
   );
 }
 
-function CurrentView({ view }: { view: ViewId }) {
-  const label = VIEWS.find((v) => v.id === view)?.label ?? view;
-  return <PlaceholderPage title={label} />;
+type CurrentViewProps = {
+  view: ViewId;
+  data: Extract<ReturnType<typeof useCaseData>, { status: 'ready' }>;
+};
+
+function CurrentView({ view, data }: CurrentViewProps) {
+  switch (view) {
+    case 'dashboard':
+      return <DashboardPage {...data} />;
+    case 'evidence':
+    case 'people':
+    case 'timeline':
+    case 'workspace': {
+      const label = VIEWS.find((v) => v.id === view)?.label ?? view;
+      return <PlaceholderPage title={label} />;
+    }
+    default: {
+      const unreachable: never = view;
+      return unreachable;
+    }
+  }
 }
