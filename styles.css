@@ -846,3 +846,28 @@ a:focus-visible {
     display: block;
   }
 }
+
+/* Styling für die Demo- / Critical-Badge Komponente */
+.component.demo-component {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.75rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: #ff4d4d;
+  background-color: rgba(255, 77, 77, 0.12);
+  border: 1px solid rgba(255, 77, 77, 0.35);
+  border-radius: 6px;
+  box-shadow: 0 0 10px rgba(255, 77, 77, 0.15);
+  transition: all 0.2s ease-in-out;
+}
+
+.component.demo-component:hover {
+  background-color: rgba(255, 77, 77, 0.2);
+  border-color: rgba(255, 77, 77, 0.6);
+  box-shadow: 0 0 14px rgba(255, 77, 77, 0.3);
+  transform: translateY(-1px);
+}

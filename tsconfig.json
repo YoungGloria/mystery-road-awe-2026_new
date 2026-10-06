@@ -5,6 +5,7 @@
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "moduleResolution": "Bundler",
+    "jsx": "react-jsx",
 
     // Vite handles the actual build; tsc only type-checks
     "noEmit": true,
@@ -20,5 +21,11 @@
     "moduleDetection": "force",
     "skipLibCheck": true
   },
-  "include": ["modules/**/*.ts", "*.ts", "modules/states/appState.js"]
+  "include": [
+    "modules/**/*.ts",
+    "modules/**/*.tsx",
+    "*.ts",
+    "*.tsx",
+    "modules/states/appState.js"
+  ]
 }
