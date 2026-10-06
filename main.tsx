@@ -33,6 +33,9 @@ import {
   closeEvidenceDetail,
   saveCurrentNote,
 } from './modules/views/evidenceDetails.js';
+import { DemoComponent } from './modules/components/DemoComponent.js';
+import { createRoot } from 'react-dom/client';
+import React from 'react';
 
 declare global {
   interface Window {
@@ -53,6 +56,38 @@ function initApp(): void {
 
   loadAllData().then(function (data) {
     handleHashChange();
+
+    // Demo6: The dummy components were moved to main, to keep the vanilla app fully functional
+    const reactContainer = document.getElementById('demo-react-container');
+    if (reactContainer) {
+      const root = createRoot(reactContainer);
+
+      root.render(
+        <React.StrictMode>
+          <div
+            style={{
+              padding: '1rem',
+              border: '1px dashed #ff4d4d',
+              borderRadius: '8px',
+              margin: '1rem 0',
+            }}
+          >
+            {/* Fallback */}
+            <DemoComponent />
+
+            <hr style={{ margin: '1rem 0', opacity: 0.2 }} />
+
+            {/* Label */}
+            <DemoComponent label="#42" />
+
+            <hr style={{ margin: '1rem 0', opacity: 0.2 }} />
+
+            {/* different  Label */}
+            <DemoComponent label="Status: needs better label" />
+          </div>
+        </React.StrictMode>
+      );
+    }
 
     loadNoteAsync('E01').then(function (firstNote) {
       console.log('First note preview:', firstNote);
