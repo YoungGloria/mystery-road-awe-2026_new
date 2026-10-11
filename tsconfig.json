@@ -10,6 +10,9 @@
     // Vite handles the actual build; tsc only type-checks
     "noEmit": true,
 
+    // JS-Dateien unterstützen (vielleicht überflüssig)
+    "allowJs": true,
+
     // Strictness
     "strict": true,
     "noUncheckedIndexedAccess": true,
@@ -21,11 +24,6 @@
     "moduleDetection": "force",
     "skipLibCheck": true
   },
-  "include": [
-    "modules/**/*.ts",
-    "modules/**/*.tsx",
-    "*.ts",
-    "*.tsx",
-    "modules/states/appState.js"
-, "pages/PlaceholderPage.tsx"  ]
+  "include": ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx"],
+  "exclude": ["node_modules", "dist", "build"]
 }
