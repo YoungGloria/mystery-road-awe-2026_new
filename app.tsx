@@ -4,6 +4,8 @@ import { useHashRoute } from './hooks/useHashRoute';
 import { DashboardPage } from './pages/DashboardPage';
 import { PlaceholderPage } from './pages/PlaceholderPage';
 import { VIEWS, type ViewId } from './routes';
+import { PeopleLocationsPage } from './pages/PeopleLocationsPage';
+import { TimelinePage } from './pages/TimelinePage';
 
 export function App() {
   const view = useHashRoute();
@@ -38,9 +40,23 @@ function CurrentView({ view, data }: CurrentViewProps) {
   switch (view) {
     case 'dashboard':
       return <DashboardPage {...data} />;
-    case 'evidence':
     case 'people':
+      return (
+        <PeopleLocationsPage
+          people={data.people}
+          locations={data.locations}
+          evidence={data.evidence}
+        />
+      );
     case 'timeline':
+      return (
+        <TimelinePage
+          events={data.timeline}
+          people={data.people}
+          locations={data.locations}
+        />
+      );
+    case 'evidence':
     case 'workspace': {
       const label = VIEWS.find((v) => v.id === view)?.label ?? view;
       return <PlaceholderPage title={label} />;

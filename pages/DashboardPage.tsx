@@ -8,6 +8,8 @@ import type {
 } from '../modules/types';
 import { StatCard } from '../components/StatCard';
 import { StatusBadge } from '../components/StatusBadge';
+import { PageSection } from '../components/PageSection';
+import { Panel } from '../components/Panel';
 
 type DashboardPageProps = {
   caseData: CaseData | null;
@@ -38,7 +40,7 @@ export function DashboardPage({
   const recentTimeline = timeline.slice(-5).reverse();
 
   return (
-    <section className="view active">
+    <PageSection title="view active">
       <h2>Case Dashboard</h2>
 
       <div className="case-summary-card">
@@ -59,8 +61,7 @@ export function DashboardPage({
         <StatCard value={reviewedCount} label="Reviewed" />
       </div>
 
-      <div className="dashboard-panel">
-        <h3>Review progress</h3>
+      <Panel title="Review progress">
         <div className="progress-bar-outer">
           <div
             className="progress-bar-inner"
@@ -68,11 +69,10 @@ export function DashboardPage({
           />
         </div>
         <p>{progressPct}% of evidence reviewed</p>
-      </div>
+      </Panel>
 
       <div className="dashboard-columns">
-        <div className="dashboard-panel">
-          <h3>Recent evidence</h3>
+        <Panel title="Recent evidence">
           {recentEvidence.length === 0 && <p>No evidence loaded yet.</p>}
           {recentEvidence.map((item) => (
             <div key={item.id} className="mini-list-item">
@@ -80,10 +80,8 @@ export function DashboardPage({
               <StatusBadge status={item.status} />
             </div>
           ))}
-        </div>
-
-        <div className="dashboard-panel">
-          <h3>Recent timeline events</h3>
+        </Panel>
+        <Panel title="Recent timeline events">
           {recentTimeline.length === 0 && <p>No timeline events loaded yet.</p>}
           {recentTimeline.map((event) => (
             <div key={event.id} className="mini-list-item">
@@ -92,8 +90,8 @@ export function DashboardPage({
               {event.title}
             </div>
           ))}
-        </div>
+        </Panel>
       </div>
-    </section>
+    </PageSection>
   );
 }
