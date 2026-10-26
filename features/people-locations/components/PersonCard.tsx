@@ -1,4 +1,6 @@
 import type { Person } from '../../../modules/types';
+import { Link } from 'react-router-dom';
+import { paths } from '../../../shared/paths';
 
 type PersonCardProps = {
   person: Person;
@@ -15,7 +17,9 @@ export function PersonCard({ person, evidenceCount }: PersonCardProps) {
           alt={`Portrait of ${person.name}`}
         />
         <div>
-          <h3>{person.name}</h3>
+          <h3>
+            <Link to={paths.person(person.id)}>{person.name}</Link>
+          </h3>
           <div className="person-role">{person.role}</div>
         </div>
       </div>
@@ -32,7 +36,14 @@ export function PersonCard({ person, evidenceCount }: PersonCardProps) {
       <div className="person-statement">&ldquo;{person.statement}&rdquo;</div>
 
       <p>
-        {evidenceCount} related evidence item{evidenceCount === 1 ? '' : 's'}
+        {evidenceCount} related evidence item{evidenceCount === 1 ? '' : 's'}{' '}
+        &mdash;{' '}
+        <Link
+          className="evidence-count-link"
+          to={paths.evidenceForPerson(person.id)}
+        >
+          view
+        </Link>
       </p>
     </article>
   );

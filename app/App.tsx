@@ -12,7 +12,10 @@ export function App() {
       <AppHeader />
       <main className="app-main">
         {data.status === 'loading' ? (
-          <p>Loading case file&hellip;</p>
+          <div className="app-loading" role="status" aria-live="polite">
+            <div className="spinner" aria-hidden="true"></div>
+            <p>Loading case file&hellip;</p>
+          </div>
         ) : (
           <AppRoutes data={data} />
         )}

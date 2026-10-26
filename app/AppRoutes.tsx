@@ -7,6 +7,7 @@ import { PeopleLocationsPage } from '../features/people-locations/PeopleLocation
 import { TimelinePage } from '../features/timeline/TimelinePage';
 import { PlaceholderPage } from '../shared/components/PlaceholderPage';
 import type { ReadyCaseData } from './useCaseData';
+import { PersonDetailPage } from '../features/people-locations/PersonDetailPage';
 
 type AppRoutesProps = { data: ReadyCaseData };
 
@@ -18,8 +19,10 @@ export function AppRoutes({ data }: AppRoutesProps) {
       <Route path="/team" element={<PeopleLocationsPage />}>
         <Route index element={<Navigate to="people" replace />} />
         <Route
-          path="people"
-          element={<PeopleList people={data.people} evidence={data.evidence} />}
+          path="people/:personId"
+          element={
+            <PersonDetailPage people={data.people} evidence={data.evidence} />
+          }
         />
         <Route
           path="locations"

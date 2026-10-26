@@ -1,7 +1,9 @@
+import { Link } from 'react-router-dom';
 import { formatDate } from '../../../modules/helpers';
 import type { Location, Person, TimelineEvent } from '../../../modules/types';
 import { CertaintyBadge } from './CertaintyBadge';
 import { EventPlaces } from './EventPlaces';
+import { paths } from '../../../shared/paths';
 
 type TimelineEventCardProps = {
   event: TimelineEvent;
@@ -25,16 +27,26 @@ export function TimelineEventCard({
 
       {participants.length > 0 && (
         <p className="evidence-meta">
-          People: {participants.map((p) => p.name).join(', ')}
+          People:{' '}
+          {participants.map((person, i) => (
+            <span key={person.id}>
+              {i > 0 && ', '}
+              <Link to={paths.person(person.id)}>{person.name}</Link>
+            </span>
+          ))}
         </p>
       )}
 
       <EventPlaces places={places} />
 
       {event.evidenceIds.map((id) => (
-        <span key={id} className="evidence-link-btn">
+        <Link
+          key={id}
+          className="evidence-link-btn"
+          to={paths.evidenceItem(id)}
+        >
           View {id}
-        </span>
+        </Link>
       ))}
     </article>
   );
