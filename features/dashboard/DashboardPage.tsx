@@ -7,7 +7,7 @@ import type {
   TimelineEvent,
 } from '../../modules/types';
 import { StatCard } from './components/StatCard';
-import { StatusBadge } from '../../shared/components/StatusBadge';
+import { Badge } from '../../shared/components/Badge';
 import { PageSection } from '../../shared/components/PageSection';
 import { Panel } from '../../shared/components/Panel';
 
@@ -46,9 +46,9 @@ export function DashboardPage({
       <div className="case-summary-card">
         <h3>{caseData?.title ?? 'Case'}</h3>
         <p>
-          <span className="badge badge-flagged">
+          <Badge variant="flagged">
             {(caseData?.status ?? 'unknown').toUpperCase()}
-          </span>
+          </Badge>
         </p>
         <p>{caseData?.summary ?? ''}</p>
       </div>
@@ -77,7 +77,11 @@ export function DashboardPage({
           {recentEvidence.map((item) => (
             <div key={item.id} className="mini-list-item">
               <strong>{item.id}</strong> &mdash; {item.title}{' '}
-              <StatusBadge status={item.status} />
+              <p>
+                <Badge variant="flagged">
+                  {(item.status ?? 'unknown').toUpperCase()}
+                </Badge>
+              </p>
             </div>
           ))}
         </Panel>

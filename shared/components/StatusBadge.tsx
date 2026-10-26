@@ -1,12 +1,14 @@
-import { getStatusBadgeClass } from '../../modules/helpers';
 import type { EvidenceStatus } from '../../modules/types';
+import { Badge, type BadgeVariant } from './Badge';
 
-type StatusBadgeProps = {
-  status: EvidenceStatus;
+const STATUS_VARIANT: Record<EvidenceStatus, BadgeVariant> = {
+  unreviewed: 'unreviewed',
+  reviewed: 'reviewed',
+  flagged: 'flagged',
 };
 
+type StatusBadgeProps = { status: EvidenceStatus };
+
 export function StatusBadge({ status }: StatusBadgeProps) {
-  return (
-    <span className={`badge ${getStatusBadgeClass(status)}`}>{status}</span>
-  );
+  return <Badge variant={STATUS_VARIANT[status]}>{status}</Badge>;
 }
