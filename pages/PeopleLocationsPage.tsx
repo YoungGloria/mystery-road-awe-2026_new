@@ -3,6 +3,9 @@ import type { Evidence, Location, Person } from '../modules/types';
 import { LocationCard } from '../components/LocationCard';
 import { PageSection } from '../components/PageSection';
 import { PersonCard } from '../components/PersonCard';
+import { TeamTabs, type TeamTab } from '../components/TeamTabs';
+import { LocationList } from '../components/LocationList';
+import { PeopleList } from '../components/PeopleList';
 
 type PeopleLocationsPageProps = {
   people: Person[];
@@ -10,33 +13,22 @@ type PeopleLocationsPageProps = {
   evidence: Evidence[];
 };
 
+const activeTab: TeamTab = 'people'; // fest, bis Demo 8
+
+
 export function PeopleLocationsPage({
   people,
   locations,
   evidence,
 }: PeopleLocationsPageProps) {
   return (
-    <PageSection title="People & Locations">
-      <h3>People</h3>
-      <div className="people-grid">
-        {people.map((person) => (
-          <PersonCard
-            key={person.id}
-            person={person}
-            evidenceCount={
-              evidence.filter((item) => evidenceMentionsPerson(item, person))
-                .length
-            }
-          />
-        ))}
-      </div>
-
-      <h3>Locations</h3>
-      <div className="locations-grid">
-        {locations.map((location) => (
-          <LocationCard key={location.id} location={location} />
-        ))}
-      </div>
-    </PageSection>
-  );
+ <PageSection title="People & Locations">
+  <TeamTabs activeTab={activeTab} />
+  {activeTab === 'people' ? (
+    <PeopleList people={people} evidence={evidence} />
+  ) : (
+    <LocationList locations={locations} />
+  )}
+</PageSection>
+);
 }

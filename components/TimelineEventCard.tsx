@@ -1,6 +1,7 @@
-// components/TimelineEventCard.tsx
 import { formatDate } from '../modules/helpers';
 import type { Location, Person, TimelineEvent } from '../modules/types';
+import { CertaintyBadge } from './CertaintyBadge';
+import { EventPlaces } from './EventPlaces';
 
 type TimelineEventCardProps = {
   event: TimelineEvent;
@@ -16,16 +17,20 @@ export function TimelineEventCard({
   return (
     <article className={`timeline-event certainty-${event.certainty}`}>
       <div className="timeline-time">
-        {formatDate(event.time)}&nbsp;&middot;&nbsp;{event.certainty}
+        {formatDate(event.time)}&nbsp;&middot;&nbsp;
+        <CertaintyBadge certainty={event.certainty} />
       </div>
       <h3>{event.title}</h3>
       <p>{event.description}</p>
-      <p className="evidence-meta">
-        People: {participants.map((p) => p.name).join(', ')}
-      </p>
-      <p className="evidence-meta">
-        Location: {places.map((l) => `${l.id} - ${l.name}`).join(', ')}
-      </p>
+
+      {participants.length > 0 && (
+        <p className="evidence-meta">
+          People: {participants.map((p) => p.name).join(', ')}
+        </p>
+      )}
+
+      <EventPlaces places={places} />
+
       {event.evidenceIds.map((id) => (
         <span key={id} className="evidence-link-btn">
           View {id}
