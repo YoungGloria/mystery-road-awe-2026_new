@@ -1,10 +1,8 @@
-import { VIEWS, type ViewId } from './routes';
+// app/AppHeader.tsx
+import { NavLink } from 'react-router-dom';
+import { VIEWS } from './routes';
 
-type AppHeaderProps = {
-  currentView: ViewId;
-};
-
-export function AppHeader({ currentView }: AppHeaderProps) {
+export function AppHeader() {
   return (
     <header className="app-header">
       <div className="header-inner">
@@ -23,17 +21,16 @@ export function AppHeader({ currentView }: AppHeaderProps) {
         </div>
         <nav className="main-nav" aria-label="Main navigation">
           {VIEWS.map((view) => (
-            <button
+            <NavLink
               key={view.id}
-              type="button"
-              className={view.id === currentView ? 'nav-btn active' : 'nav-btn'}
-              aria-current={view.id === currentView ? 'page' : undefined}
-              onClick={() => {
-                window.location.hash = view.id;
-              }}
+              to={view.path}
+              end={view.path === '/'}
+              className={({ isActive }) =>
+                isActive ? 'nav-btn active' : 'nav-btn'
+              }
             >
               {view.label}
-            </button>
+            </NavLink>
           ))}
         </nav>
       </div>

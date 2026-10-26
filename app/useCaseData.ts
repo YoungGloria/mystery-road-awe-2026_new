@@ -16,6 +16,8 @@ import type {
   TimelineEvent,
 } from '../modules/types';
 
+export type ReadyCaseData = Extract<CaseDataState, { status: 'ready' }>;
+
 export type CaseDataState =
   | { status: 'loading' }
   | {

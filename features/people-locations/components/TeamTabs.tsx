@@ -1,23 +1,24 @@
+// features/people-locations/components/TeamTabs.tsx
+import { NavLink } from 'react-router-dom';
+
 const TABS = [
-  { id: 'people', label: 'People' },
-  { id: 'locations', label: 'Locations' },
+  { to: '/team/people', label: 'People' },
+  { to: '/team/locations', label: 'Locations' },
 ] as const;
 
-export type TeamTab = (typeof TABS)[number]['id'];
-
-type TeamTabsProps = { activeTab: TeamTab };
-
-export function TeamTabs({ activeTab }: TeamTabsProps) {
+export function TeamTabs() {
   return (
     <div className="tab-bar">
       {TABS.map((tab) => (
-        <button
-          key={tab.id}
-          type="button"
-          className={tab.id === activeTab ? 'tab-btn active' : 'tab-btn'}
+        <NavLink
+          key={tab.to}
+          to={tab.to}
+          className={({ isActive }) =>
+            isActive ? 'tab-btn active' : 'tab-btn'
+          }
         >
           {tab.label}
-        </button>
+        </NavLink>
       ))}
     </div>
   );
