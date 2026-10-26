@@ -1,7 +1,6 @@
 import type { Location, Person, TimelineEvent } from '../modules/types';
 import { PageSection } from '../components/PageSection';
-import { TimelineEventCard } from '../components/TimelineEventCard';
-import { EmptyState } from '../components/EmptyState';
+import { TimelineList } from '../components/TimelineList';
 
 type TimelinePageProps = {
   events: TimelineEvent[];
@@ -14,25 +13,9 @@ export function TimelinePage({ events, people, locations }: TimelinePageProps) {
     (a, b) => new Date(a.time).getTime() - new Date(b.time).getTime()
   );
 
-  if (events.length === 0) {
   return (
     <PageSection title="Investigation Timeline">
-      <EmptyState message="No timeline events available." />
+      <TimelineList events={chronological} people={people} locations={locations} />
     </PageSection>
   );
-}
-  return (
-  <PageSection title="Investigation Timeline">
-    <div className="timeline-container">
-      {chronological.map((event) => (
-        <TimelineEventCard
-          key={event.id}
-          event={event}
-          participants={people.filter((p) => event.personIds.includes(p.id))}
-          places={locations.filter((l) => event.locationIds.includes(l.id))}
-        />
-      ))}
-    </div>
-  </PageSection>
-);
 }
