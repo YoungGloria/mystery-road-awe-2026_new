@@ -1,7 +1,7 @@
 export const VIEWS = [
-  { id: 'dashboard', label: 'Dashboard', path: '/' },
-  { id: 'evidence', label: 'Evidence', path: '/evidence' },
-  { id: 'people', label: 'People & Locations', path: '/team' },
-  { id: 'timeline', label: 'Timeline', path: '/timeline' },
-  { id: 'workspace', label: 'Workspace', path: '/workspace' },
+  { id: 'dashboard', path: '/', label: 'Dashboard' },
+  { id: 'team', path: '/team', label: 'People & Locations' },
+  { id: 'timeline', path: '/timeline', label: 'Timeline' },
+  { id: 'evidence', path: '/evidence', label: 'Evidence' },
+  { id: 'workspace', path: '/workspace', label: 'Workspace' },
 ] as const;

@@ -1,4 +1,3 @@
-// app/AppRoutes.tsx
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { DashboardPage } from '../features/dashboard/DashboardPage';
 import { LocationList } from '../features/people-locations/LocationList';
@@ -18,6 +17,10 @@ export function AppRoutes({ data }: AppRoutesProps) {
 
       <Route path="/team" element={<PeopleLocationsPage />}>
         <Route index element={<Navigate to="people" replace />} />
+        <Route 
+    path="people" 
+    element={<PeopleList people={data.people} evidence={data.evidence} />} 
+  />
         <Route
           path="people/:personId"
           element={

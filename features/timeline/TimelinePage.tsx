@@ -1,7 +1,9 @@
+import { useSearchParams } from 'react-router-dom';
 import type { Location, Person, TimelineEvent } from '../../modules/types';
 import { PageSection } from '../../shared/components/PageSection';
-import { TimelineList } from './components/TimelineList';
 import { TimelineFilters } from './components/TimelineFilters';
+import { TimelineList } from './components/TimelineList';
+import { parseTimelineQuery, selectTimelineEvents } from './timelineQuery';
 
 type TimelinePageProps = {
   events: TimelineEvent[];
@@ -10,17 +12,22 @@ type TimelinePageProps = {
 };
 
 export function TimelinePage({ events, people, locations }: TimelinePageProps) {
-  const chronological = [...events].sort(
-    (a, b) => new Date(a.time).getTime() - new Date(b.time).getTime()
-  );
-
+  const [searchParams] = useSearchParams();
+  const query = parseTimelineQuery(searchParams);
+  const visibleEvents = selectTimelineEvents(events, query);
   const types = Array.from(new Set(events.map((e) => e.type)));
 
   return (
     <PageSection title="Investigation Timeline">
-      <TimelineFilters people={people} locations={locations} types={types} />
+      <TimelineFilters
+        key={searchParams.toString()}
+        people={people}
+        locations={locations}
+        types={types}
+        initial={query}
+      />
       <TimelineList
-        events={chronological}
+        events={visibleEvents}
         people={people}
         locations={locations}
       />
