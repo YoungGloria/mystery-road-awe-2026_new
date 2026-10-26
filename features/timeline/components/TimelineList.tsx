@@ -1,5 +1,5 @@
-import type { Location, Person, TimelineEvent } from '../modules/types';
-import { EmptyState } from './EmptyState';
+import type { Location, Person, TimelineEvent } from '../../../modules/types';
+import { EmptyState } from '../../../shared/components/EmptyState';
 import { TimelineEventCard } from './TimelineEventCard';
 
 type TimelineListProps = {
@@ -10,7 +10,9 @@ type TimelineListProps = {
 
 export function TimelineList({ events, people, locations }: TimelineListProps) {
   if (events.length === 0) {
-    return <EmptyState message="No timeline events match the current filters." />;
+    return (
+      <EmptyState message="No timeline events match the current filters." />
+    );
   }
 
   return (

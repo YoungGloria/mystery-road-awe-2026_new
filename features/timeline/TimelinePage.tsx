@@ -1,6 +1,6 @@
-import type { Location, Person, TimelineEvent } from '../modules/types';
-import { PageSection } from '../components/PageSection';
-import { TimelineList } from '../components/TimelineList';
+import type { Location, Person, TimelineEvent } from '../../modules/types';
+import { PageSection } from '../../shared/components/PageSection';
+import { TimelineList } from './components/TimelineList';
 
 type TimelinePageProps = {
   events: TimelineEvent[];
@@ -15,7 +15,11 @@ export function TimelinePage({ events, people, locations }: TimelinePageProps) {
 
   return (
     <PageSection title="Investigation Timeline">
-      <TimelineList events={chronological} people={people} locations={locations} />
+      <TimelineList
+        events={chronological}
+        people={people}
+        locations={locations}
+      />
     </PageSection>
   );
 }

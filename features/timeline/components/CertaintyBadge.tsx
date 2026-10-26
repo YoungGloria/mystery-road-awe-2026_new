@@ -1,4 +1,4 @@
-import type { TimelineCertainty } from '../modules/types';
+import type { TimelineCertainty } from '../../../modules/types';
 
 const CERTAINTY_CLASS: Record<TimelineCertainty, string> = {
   confirmed: 'badge badge-reviewed',

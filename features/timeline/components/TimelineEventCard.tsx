@@ -1,5 +1,5 @@
-import { formatDate } from '../modules/helpers';
-import type { Location, Person, TimelineEvent } from '../modules/types';
+import { formatDate } from '../../../modules/helpers';
+import type { Location, Person, TimelineEvent } from '../../../modules/types';
 import { CertaintyBadge } from './CertaintyBadge';
 import { EventPlaces } from './EventPlaces';
 

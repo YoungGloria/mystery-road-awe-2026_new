@@ -1,11 +1,11 @@
-import { AppHeader } from './components/AppHeader';
-import { useCaseData } from './hooks/useCaseData';
-import { useHashRoute } from './hooks/useHashRoute';
-import { DashboardPage } from './pages/DashboardPage';
-import { PlaceholderPage } from './pages/PlaceholderPage';
+import { AppHeader } from './AppHeader';
+import { useCaseData } from './useCaseData';
+import { useHashRoute } from './useHashRoute';
 import { VIEWS, type ViewId } from './routes';
-import { PeopleLocationsPage } from './pages/PeopleLocationsPage';
-import { TimelinePage } from './pages/TimelinePage';
+import { DashboardPage } from '../features/dashboard/DashboardPage';
+import { PeopleLocationsPage } from '../features/people-locations/PeopleLocationsPage';
+import { TimelinePage } from '../features/timeline/TimelinePage';
+import { PlaceholderPage } from '../shared/components/PlaceholderPage';
 
 export function App() {
   const view = useHashRoute();

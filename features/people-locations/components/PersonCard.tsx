@@ -1,4 +1,4 @@
-import type { Person } from '../modules/types';
+import type { Person } from '../../../modules/types';
 
 type PersonCardProps = {
   person: Person;

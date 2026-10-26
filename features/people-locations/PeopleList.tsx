@@ -1,6 +1,6 @@
-import { evidenceMentionsPerson } from '../modules/states/evidenceState';
-import type { Evidence, Person } from '../modules/types';
-import { PersonCard } from './PersonCard';
+import { evidenceMentionsPerson } from '../../modules/states/evidenceState';
+import type { Evidence, Person } from '../../modules/types';
+import { PersonCard } from './components/PersonCard';
 
 type PeopleListProps = {
   people: Person[];
@@ -14,7 +14,10 @@ export function PeopleList({ people, evidence }: PeopleListProps) {
         <PersonCard
           key={person.id}
           person={person}
-          evidenceCount={evidence.filter((item) => evidenceMentionsPerson(item, person)).length}
+          evidenceCount={
+            evidence.filter((item) => evidenceMentionsPerson(item, person))
+              .length
+          }
         />
       ))}
     </div>

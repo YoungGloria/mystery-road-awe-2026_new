@@ -1,15 +1,15 @@
-import { formatDate } from '../modules/helpers';
+import { formatDate } from '../../modules/helpers';
 import type {
   CaseData,
   Evidence,
   Location,
   Person,
   TimelineEvent,
-} from '../modules/types';
-import { StatCard } from '../components/StatCard';
-import { StatusBadge } from '../components/StatusBadge';
-import { PageSection } from '../components/PageSection';
-import { Panel } from '../components/Panel';
+} from '../../modules/types';
+import { StatCard } from './components/StatCard';
+import { StatusBadge } from '../../shared/components/StatusBadge';
+import { PageSection } from '../../shared/components/PageSection';
+import { Panel } from '../../shared/components/Panel';
 
 type DashboardPageProps = {
   caseData: CaseData | null;

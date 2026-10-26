@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { parseHash, type ViewId } from '../routes';
+import { parseHash, type ViewId } from './routes';
 
 export function useHashRoute(): ViewId {
   const [view, setView] = useState<ViewId>(() =>

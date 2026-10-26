@@ -1,4 +1,4 @@
-import type { Location } from '../modules/types';
+import type { Location } from '../../../modules/types';
 
 type EventPlacesProps = { places: Location[] };
 

@@ -1,4 +1,4 @@
-import { VIEWS, type ViewId } from '../routes';
+import { VIEWS, type ViewId } from './routes';
 
 type AppHeaderProps = {
   currentView: ViewId;
