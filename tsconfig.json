@@ -24,6 +24,6 @@
     "moduleDetection": "force",
     "skipLibCheck": true
   },
-  "include": ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx"],
+"include": ["modules/**/*", "app/**/*", "features/**/*", "shared/**/*", "*.ts", "*.tsx"],
   "exclude": ["node_modules", "dist", "build"]
 }
