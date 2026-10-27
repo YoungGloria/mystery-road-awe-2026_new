@@ -7,6 +7,7 @@ type TimelineFiltersProps = {
   locations: Location[];
   types: string[];
   initial: TimelineQuery;
+  onChange: (parameter: string, value: string) => void;
 };
 
 export function TimelineFilters({
@@ -14,6 +15,7 @@ export function TimelineFilters({
   locations,
   types,
   initial,
+  onChange,
 }: TimelineFiltersProps) {
   return (
     <div className="toolbar">
@@ -22,21 +24,24 @@ export function TimelineFilters({
           id="timelineOrder"
           label="Order"
           allLabel="Oldest first"
-          defaultValue={initial.order === 'desc' ? 'desc' : ''}
+          value={initial.order === 'desc' ? 'desc' : ''}
+          onChange={(value) => onChange('order', value)}
           options={[{ value: 'desc', label: 'Newest first' }]}
         />
         <FilterSelect
           id="timelinePersonFilter"
           label="Filter by person"
           allLabel="All people"
-          defaultValue={initial.personId}
+          value={initial.personId}
+          onChange={(value) => onChange('person', value)}
           options={people.map((p) => ({ value: p.id, label: p.name }))}
         />
         <FilterSelect
           id="timelineLocationFilter"
           label="Filter by location"
           allLabel="All locations"
-          defaultValue={initial.locationId}
+          value={initial.locationId}
+          onChange={(value) => onChange('location', value)}
           options={locations.map((l) => ({
             value: l.id,
             label: `${l.id} - ${l.name}`,
@@ -46,7 +51,8 @@ export function TimelineFilters({
           id="timelineTypeFilter"
           label="Filter by event type"
           allLabel="All event types"
-          defaultValue={initial.type}
+          value={initial.type}
+          onChange={(value) => onChange('type', value)}
           options={types.map((t) => ({ value: t, label: t }))}
         />
       </div>

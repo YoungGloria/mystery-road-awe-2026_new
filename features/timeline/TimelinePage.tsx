@@ -12,10 +12,20 @@ type TimelinePageProps = {
 };
 
 export function TimelinePage({ events, people, locations }: TimelinePageProps) {
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const query = parseTimelineQuery(searchParams);
   const visibleEvents = selectTimelineEvents(events, query);
   const types = Array.from(new Set(events.map((e) => e.type)));
+
+  function updateFilter(parameter: string, value: string) {
+    const next = new URLSearchParams(searchParams);
+    if (value) {
+      next.set(parameter, value);
+    } else {
+      next.delete(parameter);
+    }
+    setSearchParams(next);
+  }
 
   return (
     <PageSection title="Investigation Timeline">
@@ -25,6 +35,7 @@ export function TimelinePage({ events, people, locations }: TimelinePageProps) {
         locations={locations}
         types={types}
         initial={query}
+        onChange={updateFilter}
       />
       <TimelineList
         events={visibleEvents}

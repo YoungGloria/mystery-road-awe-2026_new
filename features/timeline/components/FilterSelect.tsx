@@ -4,7 +4,8 @@ type FilterSelectProps = {
   id: string;
   label: string;
   allLabel: string;
-  defaultValue: string;
+  value: string;
+  onChange: (value: string) => void;
   options: FilterOption[];
 };
 
@@ -12,7 +13,8 @@ export function FilterSelect({
   id,
   label,
   allLabel,
-  defaultValue,
+  value,
+  onChange,
   options,
 }: FilterSelectProps) {
   return (
@@ -20,7 +22,11 @@ export function FilterSelect({
       <label htmlFor={id} className="visually-hidden">
         {label}
       </label>
-      <select id={id} defaultValue={defaultValue}>
+      <select
+        id={id}
+        value={value}
+        onChange={(event) => onChange(event.target.value)}
+      >
         <option value="">{allLabel}</option>
         {options.map((option) => (
           <option key={option.value} value={option.value}>

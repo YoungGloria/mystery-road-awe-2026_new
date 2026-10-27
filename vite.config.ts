@@ -7,7 +7,7 @@ export default defineConfig({
   // add input for react.html to the build options so that it is included in the build output
   build: {
     rollupOptions: {
-      input: { main: 'index.html', react: 'react.html' },
+      input: { main: 'index.html' },
     },
   },
 });

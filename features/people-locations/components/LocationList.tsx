@@ -1,5 +1,5 @@
-import type { Location } from '../../modules/types';
-import { LocationCard } from './components/LocationCard';
+import type { Location } from '../../../modules/types';
+import { LocationCard } from './LocationCard';
 
 type LocationListProps = { locations: Location[] };
 

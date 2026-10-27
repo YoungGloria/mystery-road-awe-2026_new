@@ -1,12 +1,13 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { DashboardPage } from '../features/dashboard/DashboardPage';
-import { LocationList } from '../features/people-locations/LocationList';
-import { PeopleList } from '../features/people-locations/PeopleList';
+import { LocationList } from '../features/people-locations/components/LocationList';
+import { PeopleList } from '../features/people-locations/components/PeopleList';
 import { PeopleLocationsPage } from '../features/people-locations/PeopleLocationsPage';
 import { TimelinePage } from '../features/timeline/TimelinePage';
-import { PlaceholderPage } from '../shared/components/PlaceholderPage';
 import type { ReadyCaseData } from './useCaseData';
 import { PersonDetailPage } from '../features/people-locations/PersonDetailPage';
+import { WorkspacePage } from '../features/workspace/WorkspacePage';
+import { EvidencePage } from '../features/evidence/EvidencePage';
 
 type AppRoutesProps = { data: ReadyCaseData };
 
@@ -43,10 +44,21 @@ export function AppRoutes({ data }: AppRoutesProps) {
           />
         }
       />
-      <Route path="/evidence" element={<PlaceholderPage title="Evidence" />} />
+      <Route
+        path="/evidence"
+        element={
+          <EvidencePage
+            evidence={data.evidence}
+            people={data.people}
+            locations={data.locations}
+            onToggleBookmark={data.toggleEvidenceBookmark}
+            onUpdateEvidence={data.updateEvidence}
+          />
+        }
+      />
       <Route
         path="/workspace"
-        element={<PlaceholderPage title="Workspace" />}
+        element={<WorkspacePage evidence={data.evidence} people={data.people} />}
       />
 
       <Route path="*" element={<Navigate to="/" replace />} />

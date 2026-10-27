@@ -1,6 +1,6 @@
-import { evidenceMentionsPerson } from '../../modules/states/evidenceState';
-import type { Evidence, Person } from '../../modules/types';
-import { PersonCard } from './components/PersonCard';
+import { evidenceMentionsPerson } from '../../../modules/states/evidenceState';
+import type { Evidence, Person } from '../../../modules/types';
+import { PersonCard } from './PersonCard';
 
 type PeopleListProps = {
   people: Person[];
