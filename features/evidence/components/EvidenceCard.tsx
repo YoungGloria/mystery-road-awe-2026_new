@@ -1,19 +1,19 @@
 import { formatDate } from '../../../modules/helpers';
 import type { Evidence } from '../../../modules/types';
+import { useBookmarks } from '../../../app/BookmarkContext';
 import { Badge } from '../../../shared/components/Badge';
 import { StatusBadge } from '../../../shared/components/StatusBadge';
 
 type EvidenceCardProps = {
   item: Evidence;
   onOpen: () => void;
-  onToggleBookmark: () => void;
 };
 
 export function EvidenceCard({
   item,
   onOpen,
-  onToggleBookmark,
 }: EvidenceCardProps) {
+  const { toggleBookmark } = useBookmarks();
   const relevanceVariant =
     item.relevance === 'relevant' ? 'relevant' : 'unreviewed';
 
@@ -33,7 +33,7 @@ export function EvidenceCard({
         aria-label={`Toggle bookmark for ${item.title}`}
         onClick={(event) => {
           event.stopPropagation();
-          onToggleBookmark();
+          toggleBookmark(item.id);
         }}
       >
         <span className="bookmark-icon" aria-hidden="true">

@@ -51,7 +51,6 @@ export function AppRoutes({ data }: AppRoutesProps) {
             evidence={data.evidence}
             people={data.people}
             locations={data.locations}
-            onToggleBookmark={data.toggleEvidenceBookmark}
             onUpdateEvidence={data.updateEvidence}
           />
         }

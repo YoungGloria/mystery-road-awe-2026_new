@@ -2,6 +2,7 @@
 import { HashRouter } from 'react-router-dom';
 import { AppHeader } from './AppHeader';
 import { AppRoutes } from './AppRoutes';
+import { BookmarkProvider } from './BookmarkContext';
 import { useCaseData } from './useCaseData';
 
 export function App() {
@@ -17,7 +18,12 @@ export function App() {
             <p>Loading case file&hellip;</p>
           </div>
         ) : (
-          <AppRoutes data={data} />
+          <BookmarkProvider
+            evidence={data.evidence}
+            toggleBookmark={data.toggleEvidenceBookmark}
+          >
+            <AppRoutes data={data} />
+          </BookmarkProvider>
         )}
       </main>
       <footer className="app-footer">

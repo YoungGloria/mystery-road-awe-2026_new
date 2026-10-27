@@ -10,7 +10,6 @@ type EvidencePageProps = {
   evidence: Evidence[];
   people: Person[];
   locations: Location[];
-  onToggleBookmark: (evidenceId: string) => void;
   onUpdateEvidence: (evidenceId: string, changes: Partial<Evidence>) => void;
 };
 
@@ -74,7 +73,6 @@ export function EvidencePage({
   evidence,
   people,
   locations,
-  onToggleBookmark,
   onUpdateEvidence,
 }: EvidencePageProps) {
   const [filters, dispatch] = useReducer(
@@ -247,7 +245,6 @@ export function EvidencePage({
                 key={item.id}
                 item={item}
                 onOpen={() => openItem(item.id)}
-                onToggleBookmark={() => onToggleBookmark(item.id)}
               />
             ))}
           </div>
