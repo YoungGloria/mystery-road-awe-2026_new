@@ -18,10 +18,7 @@ export function App() {
             <p>Loading case file&hellip;</p>
           </div>
         ) : (
-          <BookmarkProvider
-            evidence={data.evidence}
-            toggleBookmark={data.toggleEvidenceBookmark}
-          >
+          <BookmarkProvider toggleBookmark={data.toggleEvidenceBookmark}>
             <AppRoutes data={data} />
           </BookmarkProvider>
         )}

@@ -52,13 +52,19 @@ export function AppRoutes({ data }: AppRoutesProps) {
             people={data.people}
             locations={data.locations}
             onUpdateEvidence={data.updateEvidence}
+            notes={data.notes}
+            onSaveNote={data.saveEvidenceNote}
           />
         }
       />
       <Route
         path="/workspace"
         element={
-          <WorkspacePage evidence={data.evidence} people={data.people} />
+          <WorkspacePage
+            evidence={data.evidence}
+            people={data.people}
+            notes={data.notes}
+          />
         }
       />
 

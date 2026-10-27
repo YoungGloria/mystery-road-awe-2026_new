@@ -5,6 +5,8 @@ import {
   loadBookmarksFromStorage,
   applyStoredBookmarkFlags,
   loadNotesFromStorage,
+  notesStore,
+  saveNoteForEvidence,
   addBookmark,
   removeBookmark,
   saveBookmarksToStorage,
@@ -22,6 +24,7 @@ import type {
 
 type EvidenceUpdate = (evidenceId: string, changes: Partial<Evidence>) => void;
 type EvidenceBookmarkToggle = (evidenceId: string) => void;
+type EvidenceNoteSave = (evidenceId: string, text: string) => void;
 
 export type ReadyCaseData = Extract<CaseDataState, { status: 'ready' }>;
 
@@ -34,8 +37,10 @@ export type CaseDataState =
       people: Person[];
       locations: Location[];
       timeline: TimelineEvent[];
+      notes: Record<string, string>;
       updateEvidence: EvidenceUpdate;
       toggleEvidenceBookmark: EvidenceBookmarkToggle;
+      saveEvidenceNote: EvidenceNoteSave;
     };
 
 export function useCaseData(): CaseDataState {
@@ -81,6 +86,18 @@ export function useCaseData(): CaseDataState {
     []
   );
 
+  const saveEvidenceNote = useCallback<EvidenceNoteSave>((evidenceId, text) => {
+    saveNoteForEvidence(evidenceId, text);
+    setState((current) => {
+      if (current.status !== 'ready') return current;
+
+      return {
+        ...current,
+        notes: { ...current.notes, [evidenceId]: text },
+      };
+    });
+  }, []);
+
   useEffect(() => {
     let cancelled = false;
 
@@ -106,8 +123,10 @@ export function useCaseData(): CaseDataState {
         locations,
         evidence: loadedEvidence,
         timeline,
+        notes: { ...notesStore },
         updateEvidence,
         toggleEvidenceBookmark,
+        saveEvidenceNote,
       });
     }
 
@@ -116,7 +135,7 @@ export function useCaseData(): CaseDataState {
     return () => {
       cancelled = true;
     };
-  }, [toggleEvidenceBookmark, updateEvidence]);
+  }, [saveEvidenceNote, toggleEvidenceBookmark, updateEvidence]);
 
   return state;
 }

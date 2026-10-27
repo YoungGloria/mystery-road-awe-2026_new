@@ -1,8 +1,4 @@
 import { useEffect, useState } from 'react';
-import {
-  loadNoteForEvidence,
-  saveNoteForEvidence,
-} from '../../../modules/states/evidenceState';
 import { formatDate } from '../../../modules/helpers';
 import type {
   Evidence,
@@ -18,6 +14,8 @@ type EvidenceDetailProps = {
   locations: Location[];
   onClose: () => void;
   onUpdate: (changes: Partial<Evidence>) => void;
+  note: string;
+  onSaveNote: (evidenceId: string, text: string) => void;
 };
 
 export function EvidenceDetail({
@@ -26,14 +24,16 @@ export function EvidenceDetail({
   locations,
   onClose,
   onUpdate,
+  note: savedNote,
+  onSaveNote,
 }: EvidenceDetailProps) {
-  const [note, setNote] = useState(() => loadNoteForEvidence(item.id));
+  const [note, setNote] = useState(savedNote);
   const [noteSaved, setNoteSaved] = useState(false);
 
   useEffect(() => {
-    setNote(loadNoteForEvidence(item.id));
+    setNote(savedNote);
     setNoteSaved(false);
-  }, [item.id]);
+  }, [item.id, savedNote]);
 
   const relatedPeople = item.personIds.map(
     (id) => people.find((person) => person.id === id)?.name ?? id
@@ -44,7 +44,7 @@ export function EvidenceDetail({
   });
 
   function saveNote() {
-    saveNoteForEvidence(item.id, note);
+    onSaveNote(item.id, note);
     setNoteSaved(true);
   }
 

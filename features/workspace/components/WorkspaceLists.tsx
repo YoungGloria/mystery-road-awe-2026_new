@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom';
-import { loadNoteForEvidence } from '../../../modules/states/evidenceState';
 import type { Evidence } from '../../../modules/types';
 import { EmptyState } from '../../../shared/components/EmptyState';
 import { Panel } from '../../../shared/components/Panel';
@@ -8,11 +7,13 @@ import { paths } from '../../../shared/paths';
 type WorkspaceListsProps = {
   bookmarkedEvidence: Evidence[];
   notes: Evidence[];
+  noteValues: Record<string, string>;
 };
 
 export function WorkspaceLists({
   bookmarkedEvidence,
   notes,
+  noteValues,
 }: WorkspaceListsProps) {
   return (
     <div className="workspace-grid">
@@ -43,7 +44,7 @@ export function WorkspaceLists({
             notes.map((item) => (
               <div key={item.id} className="mini-list-item">
                 <strong>{item.id}</strong> &mdash; {item.title}
-                <div>{loadNoteForEvidence(item.id)}</div>
+                <div>{noteValues[item.id]}</div>
               </div>
             ))
           )}

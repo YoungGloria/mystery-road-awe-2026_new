@@ -60,15 +60,14 @@ function loadNotesFromStorage(): void {
 
 function addBookmark(evidenceId: string): void {
   if (!bookmarks.includes(evidenceId)) {
-    bookmarks.push(evidenceId);
+    bookmarks = [...bookmarks, evidenceId];
     saveBookmarksToStorage();
   }
 }
 
 function removeBookmark(evidenceId: string): void {
-  const index = bookmarks.indexOf(evidenceId);
-  if (index !== -1) {
-    bookmarks.splice(index, 1);
+  if (bookmarks.includes(evidenceId)) {
+    bookmarks = bookmarks.filter((id) => id !== evidenceId);
     saveBookmarksToStorage();
   }
 }

@@ -11,6 +11,8 @@ type EvidencePageProps = {
   people: Person[];
   locations: Location[];
   onUpdateEvidence: (evidenceId: string, changes: Partial<Evidence>) => void;
+  notes: Record<string, string>;
+  onSaveNote: (evidenceId: string, text: string) => void;
 };
 
 type EvidenceFilters = {
@@ -74,6 +76,8 @@ export function EvidencePage({
   people,
   locations,
   onUpdateEvidence,
+  notes,
+  onSaveNote,
 }: EvidencePageProps) {
   const [filters, dispatch] = useReducer(filtersReducer, DEFAULT_FILTERS);
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -250,8 +254,10 @@ export function EvidencePage({
           item={selectedItem}
           people={people}
           locations={locations}
+          note={notes[selectedItem.id] ?? ''}
           onClose={closeDetail}
           onUpdate={updateSelected}
+          onSaveNote={onSaveNote}
         />
       )}
     </PageSection>

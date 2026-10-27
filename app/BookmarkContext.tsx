@@ -1,9 +1,7 @@
 import { createContext, useContext } from 'react';
 import type { ReactNode } from 'react';
-import type { Evidence } from '../modules/types';
 
 type BookmarkContextValue = {
-  evidence: Evidence[];
   toggleBookmark: (evidenceId: string) => void;
 };
 
@@ -14,12 +12,11 @@ type BookmarkProviderProps = BookmarkContextValue & {
 };
 
 export function BookmarkProvider({
-  evidence,
   toggleBookmark,
   children,
 }: BookmarkProviderProps) {
   return (
-    <BookmarkContext.Provider value={{ evidence, toggleBookmark }}>
+    <BookmarkContext.Provider value={{ toggleBookmark }}>
       {children}
     </BookmarkContext.Provider>
   );
