@@ -34,7 +34,6 @@ export type CaseDataState =
       people: Person[];
       locations: Location[];
       timeline: TimelineEvent[];
-      bookmarkCount: number;
       updateEvidence: EvidenceUpdate;
       toggleEvidenceBookmark: EvidenceBookmarkToggle;
     };
@@ -76,7 +75,6 @@ export function useCaseData(): CaseDataState {
         return {
           ...current,
           evidence,
-          bookmarkCount: evidence.filter((item) => item.bookmarked).length,
         };
       });
     },
@@ -108,7 +106,6 @@ export function useCaseData(): CaseDataState {
         locations,
         evidence: loadedEvidence,
         timeline,
-        bookmarkCount: loadedEvidence.filter((item) => item.bookmarked).length,
         updateEvidence,
         toggleEvidenceBookmark,
       });

@@ -18,7 +18,6 @@ type DashboardPageProps = {
   people: Person[];
   locations: Location[];
   timeline: TimelineEvent[];
-  bookmarkCount: number;
 };
 
 export function DashboardPage({
@@ -27,12 +26,12 @@ export function DashboardPage({
   people,
   locations,
   timeline,
-  bookmarkCount,
 }: DashboardPageProps) {
   // Derived values: calculated on every render, not stored in state.
   const reviewedCount = evidence.filter(
     (item) => item.status === 'reviewed'
   ).length;
+  const bookmarkCount = evidence.filter((item) => item.bookmarked).length;
   const progressPct =
     evidence.length === 0
       ? 0

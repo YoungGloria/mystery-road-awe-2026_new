@@ -1,5 +1,4 @@
-import { useMemo } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useMemo, useState } from 'react';
 import type { Evidence, Location, Person } from '../../modules/types';
 import { EmptyState } from '../../shared/components/EmptyState';
 import { PageSection } from '../../shared/components/PageSection';
@@ -35,41 +34,10 @@ const DEFAULT_FILTERS: EvidenceFilters = {
   sort: 'date-desc',
 };
 
-function getFilters(params: URLSearchParams): EvidenceFilters {
-  const sort = params.get('sort');
-  return {
-    search: params.get('search') ?? '',
-    type: params.get('type') ?? '',
-    person: params.get('person') ?? '',
-    location: params.get('location') ?? '',
-    status: params.get('status') ?? '',
-    relevance: params.get('relevance') ?? '',
-    sort:
-      sort === 'date-asc' || sort === 'title-asc' || sort === 'title-desc'
-        ? sort
-        : DEFAULT_FILTERS.sort,
-  };
-}
-
 function evidenceMatchesPerson(item: Evidence, person: Person): boolean {
   return (
     item.personIds.includes(person.id) || item.personIds.includes(person.name)
   );
-}
-
-function updateFilterParams(
-  current: URLSearchParams,
-  changes: Partial<EvidenceFilters>
-): URLSearchParams {
-  const next = new URLSearchParams(current);
-  Object.entries(changes).forEach(([key, value]) => {
-    if (!value || (key === 'sort' && value === DEFAULT_FILTERS.sort)) {
-      next.delete(key);
-    } else {
-      next.set(key, value);
-    }
-  });
-  return next;
 }
 
 export function EvidencePage({
@@ -79,9 +47,8 @@ export function EvidencePage({
   onToggleBookmark,
   onUpdateEvidence,
 }: EvidencePageProps) {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const filters = getFilters(searchParams);
-  const selectedId = searchParams.get('item');
+  const [filters, setFilters] = useState<EvidenceFilters>(DEFAULT_FILTERS);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
   const selectedItem = evidence.find((item) => item.id === selectedId);
 
   const types = useMemo(
@@ -90,7 +57,7 @@ export function EvidencePage({
   );
 
   const visibleEvidence = useMemo(() => {
-    const search = filters.search.toLowerCase().trim();
+    const normalizedSearch = filters.search.toLowerCase().trim();
     const filtered = evidence.filter((item) => {
       const haystack =
         `${item.title} ${item.summary} ${item.tags.join(' ')}`.toLowerCase();
@@ -98,7 +65,7 @@ export function EvidencePage({
         (candidate) => candidate.id === filters.person
       );
       return (
-        (!search || haystack.includes(search)) &&
+        (!normalizedSearch || haystack.includes(normalizedSearch)) &&
         (!filters.type || item.type.toLowerCase() === filters.type) &&
         (!person || evidenceMatchesPerson(item, person)) &&
         (!filters.location || item.locationIds.includes(filters.location)) &&
@@ -117,19 +84,15 @@ export function EvidencePage({
   }, [filters, evidence, people]);
 
   function updateFilters(changes: Partial<EvidenceFilters>) {
-    setSearchParams(updateFilterParams(searchParams, changes));
+    setFilters((current) => ({ ...current, ...changes }));
   }
 
   function openItem(id: string) {
-    const next = new URLSearchParams(searchParams);
-    next.set('item', id);
-    setSearchParams(next);
+    setSelectedId(id);
   }
 
   function closeDetail() {
-    const next = new URLSearchParams(searchParams);
-    next.delete('item');
-    setSearchParams(next);
+    setSelectedId(null);
   }
 
   function updateSelected(changes: Partial<Evidence>) {
@@ -138,9 +101,7 @@ export function EvidencePage({
   }
 
   function clearFilters() {
-    const next = new URLSearchParams();
-    if (selectedId) next.set('item', selectedId);
-    setSearchParams(next);
+    setFilters(DEFAULT_FILTERS);
   }
 
   return (
