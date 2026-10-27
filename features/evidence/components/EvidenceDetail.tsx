@@ -49,7 +49,10 @@ export function EvidenceDetail({
   }
 
   return (
-    <section className="evidence-detail" aria-labelledby="evidence-detail-title">
+    <section
+      className="evidence-detail"
+      aria-labelledby="evidence-detail-title"
+    >
       <div className="evidence-detail-header">
         <div>
           <h2 id="evidence-detail-title">{item.title}</h2>
@@ -57,7 +60,11 @@ export function EvidenceDetail({
             {item.id} &middot; {item.type} &middot; {formatDate(item.timestamp)}
           </div>
         </div>
-        <button type="button" className="btn btn-secondary btn-small" onClick={onClose}>
+        <button
+          type="button"
+          className="btn btn-secondary btn-small"
+          onClick={onClose}
+        >
           Close
         </button>
       </div>

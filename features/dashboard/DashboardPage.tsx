@@ -10,6 +10,7 @@ import { StatCard } from './components/StatCard';
 import { Badge } from '../../shared/components/Badge';
 import { PageSection } from '../../shared/components/PageSection';
 import { Panel } from '../../shared/components/Panel';
+import { StatusBadge } from '../../shared/components/StatusBadge';
 
 type DashboardPageProps = {
   caseData: CaseData | null;
@@ -40,9 +41,7 @@ export function DashboardPage({
   const recentTimeline = timeline.slice(-5).reverse();
 
   return (
-    <PageSection title="view active">
-      <h2>Case Dashboard</h2>
-
+    <PageSection title="Case Dashboard">
       <div className="case-summary-card">
         <h3>{caseData?.title ?? 'Case'}</h3>
         <p>
@@ -78,9 +77,7 @@ export function DashboardPage({
             <div key={item.id} className="mini-list-item">
               <strong>{item.id}</strong> &mdash; {item.title}{' '}
               <p>
-                <Badge variant="flagged">
-                  {(item.status ?? 'unknown').toUpperCase()}
-                </Badge>
+                <StatusBadge status={item.status} />
               </p>
             </div>
           ))}

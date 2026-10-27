@@ -2,7 +2,6 @@
   "name": "mystery-road-awe-2026_new",
   "version": "1.0.0",
   "description": "Investigate the failure of an AI-assisted rehabilitation robot.",
-  "main": "main.js",
   "private": true,
   "scripts": {
     "test": "echo \"No test specified - coming soon\" && exit 0",

@@ -30,7 +30,6 @@ export function TimelinePage({ events, people, locations }: TimelinePageProps) {
   return (
     <PageSection title="Investigation Timeline">
       <TimelineFilters
-        key={searchParams.toString()}
         people={people}
         locations={locations}
         types={types}

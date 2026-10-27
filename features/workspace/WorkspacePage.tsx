@@ -15,10 +15,7 @@ export function WorkspacePage({ evidence, people }: WorkspacePageProps) {
 
   return (
     <PageSection title="Workspace">
-      <WorkspaceLists
-        bookmarkedEvidence={bookmarkedEvidence}
-        notes={notes}
-      />
+      <WorkspaceLists bookmarkedEvidence={bookmarkedEvidence} notes={notes} />
       <HypothesisForm evidence={evidence} people={people} />
     </PageSection>
   );

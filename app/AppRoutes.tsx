@@ -18,10 +18,10 @@ export function AppRoutes({ data }: AppRoutesProps) {
 
       <Route path="/team" element={<PeopleLocationsPage />}>
         <Route index element={<Navigate to="people" replace />} />
-        <Route 
-    path="people" 
-    element={<PeopleList people={data.people} evidence={data.evidence} />} 
-  />
+        <Route
+          path="people"
+          element={<PeopleList people={data.people} evidence={data.evidence} />}
+        />
         <Route
           path="people/:personId"
           element={
@@ -58,7 +58,9 @@ export function AppRoutes({ data }: AppRoutesProps) {
       />
       <Route
         path="/workspace"
-        element={<WorkspacePage evidence={data.evidence} people={data.people} />}
+        element={
+          <WorkspacePage evidence={data.evidence} people={data.people} />
+        }
       />
 
       <Route path="*" element={<Navigate to="/" replace />} />

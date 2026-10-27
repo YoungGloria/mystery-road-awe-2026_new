@@ -150,7 +150,9 @@ export function HypothesisForm({ evidence, people }: HypothesisFormProps) {
             id="hypExplanation"
             rows={4}
             value={draft.explanation}
-            onChange={(event) => updateDraft({ explanation: event.target.value })}
+            onChange={(event) =>
+              updateDraft({ explanation: event.target.value })
+            }
           />
         </div>
         <div className="form-row">
@@ -159,7 +161,9 @@ export function HypothesisForm({ evidence, people }: HypothesisFormProps) {
             id="hypAlternative"
             type="text"
             value={draft.alternative}
-            onChange={(event) => updateDraft({ alternative: event.target.value })}
+            onChange={(event) =>
+              updateDraft({ alternative: event.target.value })
+            }
           />
         </div>
         <div className="form-actions">

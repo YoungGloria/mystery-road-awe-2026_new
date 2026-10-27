@@ -45,9 +45,7 @@ function getFilters(params: URLSearchParams): EvidenceFilters {
     status: params.get('status') ?? '',
     relevance: params.get('relevance') ?? '',
     sort:
-      sort === 'date-asc' ||
-      sort === 'title-asc' ||
-      sort === 'title-desc'
+      sort === 'date-asc' || sort === 'title-asc' || sort === 'title-desc'
         ? sort
         : DEFAULT_FILTERS.sort,
   };
@@ -94,8 +92,11 @@ export function EvidencePage({
   const visibleEvidence = useMemo(() => {
     const search = filters.search.toLowerCase().trim();
     const filtered = evidence.filter((item) => {
-      const haystack = `${item.title} ${item.summary} ${item.tags.join(' ')}`.toLowerCase();
-      const person = people.find((candidate) => candidate.id === filters.person);
+      const haystack =
+        `${item.title} ${item.summary} ${item.tags.join(' ')}`.toLowerCase();
+      const person = people.find(
+        (candidate) => candidate.id === filters.person
+      );
       return (
         (!search || haystack.includes(search)) &&
         (!filters.type || item.type.toLowerCase() === filters.type) &&
@@ -151,7 +152,9 @@ export function EvidencePage({
               type="text"
               placeholder="Search title, summary, or tags..."
               value={filters.search}
-              onChange={(event) => updateFilters({ search: event.target.value })}
+              onChange={(event) =>
+                updateFilters({ search: event.target.value })
+              }
               aria-label="Search evidence"
             />
             <select
@@ -184,7 +187,9 @@ export function EvidencePage({
             </select>
             <select
               value={filters.person}
-              onChange={(event) => updateFilters({ person: event.target.value })}
+              onChange={(event) =>
+                updateFilters({ person: event.target.value })
+              }
               aria-label="Filter by person"
             >
               <option value="">All people</option>
@@ -196,7 +201,9 @@ export function EvidencePage({
             </select>
             <select
               value={filters.location}
-              onChange={(event) => updateFilters({ location: event.target.value })}
+              onChange={(event) =>
+                updateFilters({ location: event.target.value })
+              }
               aria-label="Filter by location"
             >
               <option value="">All locations</option>
@@ -208,7 +215,9 @@ export function EvidencePage({
             </select>
             <select
               value={filters.status}
-              onChange={(event) => updateFilters({ status: event.target.value })}
+              onChange={(event) =>
+                updateFilters({ status: event.target.value })
+              }
               aria-label="Filter by status"
             >
               <option value="">All statuses</option>
@@ -228,7 +237,11 @@ export function EvidencePage({
               <option value="relevant">Relevant</option>
               <option value="irrelevant">Irrelevant</option>
             </select>
-            <button type="button" className="btn btn-secondary" onClick={clearFilters}>
+            <button
+              type="button"
+              className="btn btn-secondary"
+              onClick={clearFilters}
+            >
               Clear filters
             </button>
           </div>
