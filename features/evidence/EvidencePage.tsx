@@ -75,10 +75,7 @@ export function EvidencePage({
   locations,
   onUpdateEvidence,
 }: EvidencePageProps) {
-  const [filters, dispatch] = useReducer(
-    filtersReducer,
-    DEFAULT_FILTERS
-  );
+  const [filters, dispatch] = useReducer(filtersReducer, DEFAULT_FILTERS);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const selectedItem = evidence.find((item) => item.id === selectedId);
 
@@ -144,9 +141,7 @@ export function EvidencePage({
               type="text"
               placeholder="Search title, summary, or tags..."
               value={filters.search}
-              onChange={(event) =>
-                updateFilter('search', event.target.value)
-              }
+              onChange={(event) => updateFilter('search', event.target.value)}
               aria-label="Search evidence"
             />
             <select
@@ -192,9 +187,7 @@ export function EvidencePage({
             </select>
             <select
               value={filters.location}
-              onChange={(event) =>
-                updateFilter('location', event.target.value)
-              }
+              onChange={(event) => updateFilter('location', event.target.value)}
               aria-label="Filter by location"
             >
               <option value="">All locations</option>

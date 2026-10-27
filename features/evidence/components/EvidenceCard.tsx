@@ -9,10 +9,7 @@ type EvidenceCardProps = {
   onOpen: () => void;
 };
 
-export function EvidenceCard({
-  item,
-  onOpen,
-}: EvidenceCardProps) {
+export function EvidenceCard({ item, onOpen }: EvidenceCardProps) {
   const { toggleBookmark } = useBookmarks();
   const relevanceVariant =
     item.relevance === 'relevant' ? 'relevant' : 'unreviewed';
