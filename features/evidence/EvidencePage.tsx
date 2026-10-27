@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useReducer, useState } from 'react';
 import type { Evidence, Location, Person } from '../../modules/types';
 import { EmptyState } from '../../shared/components/EmptyState';
 import { PageSection } from '../../shared/components/PageSection';
@@ -34,6 +34,36 @@ const DEFAULT_FILTERS: EvidenceFilters = {
   sort: 'date-desc',
 };
 
+type FilterKey = Exclude<keyof EvidenceFilters, 'sort'>;
+
+type EvidenceFilterAction =
+  | {
+      type: 'SET_FILTER';
+      filter: FilterKey;
+      value: string;
+    }
+  | {
+      type: 'SET_SORT';
+      value: EvidenceFilters['sort'];
+    }
+  | {
+      type: 'CLEAR_FILTERS';
+    };
+
+function filtersReducer(
+  state: EvidenceFilters,
+  action: EvidenceFilterAction
+): EvidenceFilters {
+  switch (action.type) {
+    case 'SET_FILTER':
+      return { ...state, [action.filter]: action.value };
+    case 'SET_SORT':
+      return { ...state, sort: action.value };
+    case 'CLEAR_FILTERS':
+      return DEFAULT_FILTERS;
+  }
+}
+
 function evidenceMatchesPerson(item: Evidence, person: Person): boolean {
   return (
     item.personIds.includes(person.id) || item.personIds.includes(person.name)
@@ -47,7 +77,10 @@ export function EvidencePage({
   onToggleBookmark,
   onUpdateEvidence,
 }: EvidencePageProps) {
-  const [filters, setFilters] = useState<EvidenceFilters>(DEFAULT_FILTERS);
+  const [filters, dispatch] = useReducer(
+    filtersReducer,
+    DEFAULT_FILTERS
+  );
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const selectedItem = evidence.find((item) => item.id === selectedId);
 
@@ -83,8 +116,8 @@ export function EvidencePage({
     });
   }, [filters, evidence, people]);
 
-  function updateFilters(changes: Partial<EvidenceFilters>) {
-    setFilters((current) => ({ ...current, ...changes }));
+  function updateFilter(filter: FilterKey, value: string) {
+    dispatch({ type: 'SET_FILTER', filter, value });
   }
 
   function openItem(id: string) {
@@ -101,7 +134,7 @@ export function EvidencePage({
   }
 
   function clearFilters() {
-    setFilters(DEFAULT_FILTERS);
+    dispatch({ type: 'CLEAR_FILTERS' });
   }
 
   return (
@@ -114,15 +147,16 @@ export function EvidencePage({
               placeholder="Search title, summary, or tags..."
               value={filters.search}
               onChange={(event) =>
-                updateFilters({ search: event.target.value })
+                updateFilter('search', event.target.value)
               }
               aria-label="Search evidence"
             />
             <select
               value={filters.sort}
               onChange={(event) =>
-                updateFilters({
-                  sort: event.target.value as EvidenceFilters['sort'],
+                dispatch({
+                  type: 'SET_SORT',
+                  value: event.target.value as EvidenceFilters['sort'],
                 })
               }
               aria-label="Sort evidence"
@@ -136,7 +170,7 @@ export function EvidencePage({
           <div className="toolbar-row">
             <select
               value={filters.type}
-              onChange={(event) => updateFilters({ type: event.target.value })}
+              onChange={(event) => updateFilter('type', event.target.value)}
               aria-label="Filter by type"
             >
               <option value="">All types</option>
@@ -148,9 +182,7 @@ export function EvidencePage({
             </select>
             <select
               value={filters.person}
-              onChange={(event) =>
-                updateFilters({ person: event.target.value })
-              }
+              onChange={(event) => updateFilter('person', event.target.value)}
               aria-label="Filter by person"
             >
               <option value="">All people</option>
@@ -163,7 +195,7 @@ export function EvidencePage({
             <select
               value={filters.location}
               onChange={(event) =>
-                updateFilters({ location: event.target.value })
+                updateFilter('location', event.target.value)
               }
               aria-label="Filter by location"
             >
@@ -176,9 +208,7 @@ export function EvidencePage({
             </select>
             <select
               value={filters.status}
-              onChange={(event) =>
-                updateFilters({ status: event.target.value })
-              }
+              onChange={(event) => updateFilter('status', event.target.value)}
               aria-label="Filter by status"
             >
               <option value="">All statuses</option>
@@ -189,7 +219,7 @@ export function EvidencePage({
             <select
               value={filters.relevance}
               onChange={(event) =>
-                updateFilters({ relevance: event.target.value })
+                updateFilter('relevance', event.target.value)
               }
               aria-label="Filter by relevance"
             >
